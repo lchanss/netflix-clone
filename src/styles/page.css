@@ -1,0 +1,6 @@
+.page {
+  width: 1440px;
+  margin: 0 auto;
+  color: var(--neutral-200);
+  background-color: var(--black);
+}
