@@ -1,18 +1,17 @@
 :root {
   --white: #ffffff;
-  --neutral-300: #d4d4d4;
+  --neutral-200: #e5e5e5;
+  --neutral-400: #a3a3a3;
+  --neutral-500: #737373;
+
   --neutral-900: #171717;
-  --black: #171717;
+  --black: #141414;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-body {
-  color: var(--black);
 }
 
 ul,
@@ -38,13 +37,13 @@ button:focus {
 .page {
   width: 1440px;
   margin: 0 auto;
-  background-color: aliceblue;
+  color: var(--neutral-200);
+  background-color: var(--black);
 }
 
 .main-header {
   height: 68px;
-  background-color: black;
-  color: white;
+  background-color: var(--black);
   display: flex;
   padding: 0 60px;
   gap: 44px;
@@ -67,7 +66,7 @@ button:focus {
 
   .nav-item {
     :hover {
-      color: var(--neutral-300);
+      color: var(--neutral-400);
     }
 
     a {
@@ -93,5 +92,52 @@ button:focus {
 
   .profile-button img {
     border-radius: 4px;
+  }
+}
+
+.footer {
+  padding: 20px 260px;
+}
+
+.footer .footer-social {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0 4px;
+}
+
+.footer .footer-links {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px 40px;
+  margin-bottom: 28px;
+}
+
+.footer .footer-link {
+  color: var(--neutral-400);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  cursor: pointer;
+  width: fit-content;
+  font-size: 13px;
+}
+
+.footer .footer-link:hover {
+  text-decoration: underline;
+}
+
+.footer .footer-company-info {
+  font-size: 11px;
+  color: var(--neutral-500);
+  line-height: 1.6;
+  margin-bottom: 15px;
+
+  p {
+    margin-bottom: 4px;
+  }
+
+  a:hover {
+    text-decoration: underline;
   }
 }
