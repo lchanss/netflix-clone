@@ -13,6 +13,7 @@
   top: 0;
   left: 0;
   width: 100%;
+  z-index: 0;
 }
 
 .hero-overlay {
@@ -22,6 +23,7 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(77deg, rgba(0, 0, 0, 0.6), transparent 85%);
+  z-index: 0;
 }
 
 .age-rating {
@@ -35,11 +37,13 @@
   font-size: 18px;
   font-weight: 500;
   letter-spacing: 1px;
+  z-index: 1;
 }
 
 .hero-content {
   position: absolute;
   width: 36%;
+  z-index: 1;
 
   .title-logo,
   .info {
