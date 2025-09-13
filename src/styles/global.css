@@ -3,7 +3,7 @@
   --neutral-200: #e5e5e5;
   --neutral-400: #a3a3a3;
   --neutral-500: #737373;
-
+  --neutral-600: #525252;
   --neutral-900: #171717;
   --black: #141414;
 }
@@ -12,6 +12,11 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html,
+body {
+  height: 100%;
 }
 
 ul,
@@ -32,4 +37,9 @@ button {
 button:focus {
   outline: 2px solid #007acc;
   outline-offset: 2px;
+}
+
+main {
+  height: 100%;
+  padding: 0 60px;
 }
