@@ -1,0 +1,97 @@
+:root {
+  --white: #ffffff;
+  --neutral-300: #d4d4d4;
+  --neutral-900: #171717;
+  --black: #171717;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: var(--black);
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+}
+
+button:focus {
+  outline: 2px solid #007acc;
+  outline-offset: 2px;
+}
+
+.page {
+  width: 1440px;
+  margin: 0 auto;
+  background-color: aliceblue;
+}
+
+.main-header {
+  height: 68px;
+  background-color: black;
+  color: white;
+  display: flex;
+  padding: 0 60px;
+  gap: 44px;
+  align-items: center;
+  position: sticky;
+}
+
+.main-header .logo {
+  display: flex;
+  align-items: center;
+}
+
+.main-header .nav {
+  flex-grow: 1;
+
+  .nav-list {
+    display: flex;
+    gap: 20px;
+  }
+
+  .nav-item {
+    :hover {
+      color: var(--neutral-300);
+    }
+
+    a {
+      transition: color 0.2s ease;
+    }
+
+    .selected {
+      font-weight: bold;
+    }
+  }
+}
+
+.main-header .util {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profile-button img {
+    border-radius: 4px;
+  }
+}
