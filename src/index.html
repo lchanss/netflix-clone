@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Netflix</title>
+    <link rel="stylesheet" href="./styles/global.css" />
+    <link rel="stylesheet" href="./styles/page.css" />
+    <link rel="stylesheet" href="./styles/header.css" />
+    <link rel="stylesheet" href="./styles/hero.css" />
+    <link rel="stylesheet" href="./styles/catalog.css" />
+    <link rel="stylesheet" href="./styles/footer.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="main-header">
+        <a class="logo" href="#">
+          <img
+            src="./assets/images/netflix_logo.svg"
+            alt="netflix_logo"
+            width="92px"
+          />
+        </a>
+        <nav class="nav">
+          <ul class="nav-list">
+            <li class="nav-item"><a href="#" class="selected">홈</a></li>
+            <li class="nav-item"><a href="#">시리즈</a></li>
+            <li class="nav-item"><a href="#">영화</a></li>
+            <li class="nav-item"><a href="#">게임</a></li>
+            <li class="nav-item"><a href="#">NEW! 요즘 대세 콘텐츠</a></li>
+            <li class="nav-item"><a href="#">내가 찜한 리스트</a></li>
+            <li class="nav-item"><a href="#">언어별로 찾아보기</a></li>
+          </ul>
+        </nav>
+        <div class="util">
+          <button class="search-button">
+            <img
+              src="./assets/icons/search_icon.svg"
+              alt="검색"
+              width="24px"
+              height="24px"
+            />
+          </button>
+          <button class="kids-button">키즈</button>
+          <button class="notification-button">
+            <img
+              src="./assets/icons/notification_icon.svg"
+              alt="알림"
+              width="24px"
+              height="24px"
+            />
+          </button>
+          <button class="profile-button">
+            <img
+              src="./assets/images/profile.png"
+              alt="프로필"
+              width="32px"
+              height="32px"
+            />
+            <img
+              src="./assets/icons/arrow_drop_down_icon.svg"
+              alt="드롭다운"
+              width="24px"
+              height="24px"
+            />
+          </button>
+        </div>
+      </header>
+      <main>
+        <section class="hero">
+          <div class="hero-background-wrapper">
+            <img
+              src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABeW2n5ckFo-ba5oaaPwbrkIK1nX04cpXue-r8CN5EmCfMenypoL6lJvgJ4CVH6OOuoejJF2UsXgAIE5L5Zo2HB-xQBgxsXFGS4Fw.webp?r=1b2"
+              alt="hero_image"
+              class="hero-image"
+              width="100%"
+            />
+            <div class="hero-overlay"></div>
+            <div class="age-rating">19+</div>
+          </div>
+
+          <div class="hero-content">
+            <img
+              src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABVXL8xm6h24z1HhZh4JV9QX0Afli6b3sz8xuctU4pZr4RrT0xWMn6hesMJyy07nvFAzX3TddRleMi3wx0S5w0uZX1SD2F1huJhsGyH4PA4HO.webp?r=dd8"
+              alt="title_logo"
+              class="title-logo"
+            />
+
+            <div class="info">
+              <div class="supplemental-message">
+                <div class="badge">
+                  <span>Top</span>
+                  <span class="rank">10</span>
+                </div>
+                <h1>오늘 시리즈 순위 7위</h1>
+              </div>
+
+              <p>
+                마침내 탄지로의 칼날이 모두 벼려졌다! 피에 굶주린 혈귀의
+                습격으로 가족을 잃고 여동생마저 저주에 걸린 소년. 가혹한 운명의
+                사슬을 끊어내고 세상에서 혈귀를 멸하려, 지금 탄지로가 복수의
+                칼날을 높이 든다.
+              </p>
+            </div>
+
+            <div class="buttons">
+              <button class="play-button" aria-label="재생">
+                <img
+                  src="./assets/icons/play_icon.svg"
+                  alt="재생"
+                  width="40px"
+                />
+                재생
+              </button>
+              <button class="info-button" aria-label="상세 정보">
+                <img
+                  src="./assets/icons/info_icon.svg"
+                  alt="상세 정보"
+                  width="32px"
+                />
+                상세 정보
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="catalog">
+          <section class="content-row">
+            <h2 class="content-title">꼭 챙겨보세요! 회원님을 위한 콘텐츠</h2>
+            <div class="content-slider">
+              <div class="slider-item">
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABdMan0YLQUPDfRJX9bQxq1E6K-MYpxpkiZNUWCeTu7Icrw8Sxqg_-_dr4_xGbTcShoAK_X4XC5Xum8kf_sFuACVlnKfHfyF7LxzZw7bq824lLFdmAAiZ_cLTuCY3WWx-6wkWpTXaO3po9b3OiIwrQWNsRqvQL5NjemuvUt5Zj1a-DOBzWIaAdWPhv_H-6sPvN1k6nLk2sJbdR14GcxurqClS5fsOF-rsbRHnJ9h7r5xIrGh_SwCyx164EMYQItvpsaXW-SkGKZjrg8pR-reNzpopRJE0CvLvuOHJiwN30ja8J54fI_Z_YfwRV2vxUBGgeNVg66M2RJ1MU-girrbFM4IK4t7CdEj4xY8Bo0--eF3WyRFnVcwS.jpg?r=e56"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item">
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABSiHvu3mufZdCPLEwW987YZAbjcszTCxNwqr-5l2ztUED1yB23iKGjxy86tvHemA1C3ln5GJWz79P3n6plnQpHmauIrbPOnshAWAA2Na83qh9RrUdHrg07_02kjqHOI569aKcy6EnrdD_N4QomCC_IRWtmFvbHXfa2aKBQBB7sOt0IRCu2uHBt-nSzDAu4SSdaV41IxeUlrgY-VK233qB764JHeiYA7StIaQ5CoBddJgvRmFVBAYrgA_Q9GfzGYmQAna2p3AFQe7ytZ1cN6G2sjN4IXk0IhXihGRAQsv4Osg-d-6gXXov4oXn5ZVDD1DTLMLG9OCu3m_5OLD_UO9LyMC2RnJ9Z12yduQ53U93TaFqRRU1auQxFJQoG89dwsFcy20Wx5h68cENHaV5wU.webp?r=e1b"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item">
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABd72e4Q7gaKlUpFN5gxfRDifykAmS4-nEzQv93R9pxbSPT8ptrmyaGmrzo7C8r4IZ3NqIApvCCeRnLt5HHVxHZ-lY82Fa3LQTolDQyOtqxDnfR7TICy1hCi370XGP2Ur_P41lR42wDKvkFn9f-NO-qWhP6kgDC8F8e4.webp?r=6b9"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item">
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABTsNe1v997HHn-SicDmoG9RR6Q9UBYluxoPY_DVD7JbH_H-yY_4Yp-b6aTde2yuwI7siQpGKbK76Adj-Qo6Dr7KE9UCHxpvdt_c.webp?r=2f1"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item">
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABd98oKgCH9JvkO60g69tQa7G98g6iIPKJY3EeKrDoxx4fuJZJ22WuDyVEEGykc9mGgQZHFMUZeS5Jn3HdrQOD_AVxYYRCcpjBQQajXeIomJVTIkH9oUZhOAWe57dkaVZLQl1.jpg?r=c46"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item">
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABfbKKCZN-v89hwFCq2X7HhE3Gs8YZc5ZQ08QITvMNB7lj-AZ-nThRKBkZTzHj30Eqk4n3d49WY8vQencwp2pNCarwKN28Ep0cv4.webp?r=5d5"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+            </div>
+          </section>
+          <section class="content-row">
+            <h2 class="content-title">상상의 나래를 펼친 영화</h2>
+            <div class="content-slider">
+              <div class="slider-item">
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABW0zGMsApBfdegqOnWStN_u1cFN4xiIEvRJHACeFwDknZZ4TmRbbIRAqTnTC88GqS8tXtrN9TIfBA1n50vYJlQANloVjEHAHI89uu3CkcbxPglSa28OxNxcik0TNb3jJPEZ-XM0xfGB9WwlCKFaTk7GyTfhaqFmve2weQB0mgiripwYncw28fhM3HqjWa_Q.jpg?r=1e1"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item">
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABWzh-KZ3hcI9QsjH2hssVP-aOWciJFXd8CicAXC9l1qS-rgdwUYFMWjyirUCPbbtul1P9rkWM543Q8JC3Reh2bpHPM8DxK69SzA.webp?r=af3"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item">
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABe9_jeEogOs9rjG98XqIg97L7XaVNyphfwhMIXDtUcu_2FA21mqQNUFPwEGdN5zZYFireR2vLCloPmyxS_8OKmrX6Irgwj7XzP0.webp?r=c82"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item">
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABRKx8FujhtWGNKnGLUPJe1qic5b5IqiE5ch0ODkcM2WutFhsLJo2CWwe0ekF7Zce_ipFscKxqXAErXhcFBWMX0EHnwKbqD5r6PM.webp?r=65a"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item">
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABf2i8dFP-LggsdTuISzEAgQWom9nPJDm-Mvd2XSkVHG_p63RpYZX2m1grNETxRODp3JcpAuaezIP86qcRdEWTgo1iNmqMe8vV7I.webp?r=8ee"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item">
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXbaZMtlHNs5QasgMfRgOrU9PwfAxWIpaqZm8o04v5Nimbydww3ZxNP0OzlXC2Ic2J3uDYBchC7o6G9jpiGYWGhbmjRlWyjItoU.webp?r=772"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+            </div>
+          </section>
+
+          <section class="content-row">
+            <h2 class="content-title">오늘 대한민국의 TOP 10 영화</h2>
+            <div class="content-slider">
+              <div class="slider-item ranked">
+                <span class="rank">1</span>
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABfbKKCZN-v89hwFCq2X7HhE3Gs8YZc5ZQ08QITvMNB7lj-AZ-nThRKBkZTzHj30Eqk4n3d49WY8vQencwp2pNCarwKN28Ep0cv4.webp?r=5d5"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item ranked">
+                <span class="rank">2</span>
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABfbKKCZN-v89hwFCq2X7HhE3Gs8YZc5ZQ08QITvMNB7lj-AZ-nThRKBkZTzHj30Eqk4n3d49WY8vQencwp2pNCarwKN28Ep0cv4.webp?r=5d5"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+
+              <div class="slider-item ranked">
+                <span class="rank">3</span>
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABfbKKCZN-v89hwFCq2X7HhE3Gs8YZc5ZQ08QITvMNB7lj-AZ-nThRKBkZTzHj30Eqk4n3d49WY8vQencwp2pNCarwKN28Ep0cv4.webp?r=5d5"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item ranked">
+                <span class="rank">4</span>
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABfbKKCZN-v89hwFCq2X7HhE3Gs8YZc5ZQ08QITvMNB7lj-AZ-nThRKBkZTzHj30Eqk4n3d49WY8vQencwp2pNCarwKN28Ep0cv4.webp?r=5d5"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item ranked">
+                <span class="rank">5</span>
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABfbKKCZN-v89hwFCq2X7HhE3Gs8YZc5ZQ08QITvMNB7lj-AZ-nThRKBkZTzHj30Eqk4n3d49WY8vQencwp2pNCarwKN28Ep0cv4.webp?r=5d5"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+              <div class="slider-item ranked">
+                <span class="rank">6</span>
+                <img
+                  src="https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABfbKKCZN-v89hwFCq2X7HhE3Gs8YZc5ZQ08QITvMNB7lj-AZ-nThRKBkZTzHj30Eqk4n3d49WY8vQencwp2pNCarwKN28Ep0cv4.webp?r=5d5"
+                  alt="영화썸네일"
+                  width="100%"
+                />
+              </div>
+            </div>
+          </section>
+        </section>
+      </main>
+      <footer class="footer">
+        <section class="footer-social">
+          <a href="#">
+            <img
+              src="./assets/images/facebook_logo.svg"
+              alt="facebook_logo"
+              width="24px"
+            />
+          </a>
+          <a href="#" class="social-icon" aria-label="instagram">
+            <img
+              src="./assets/images/instagram_logo.svg"
+              alt="instagram_logo"
+              width="20px"
+            />
+          </a>
+          <a href="#" class="social-icon" aria-label="twitter">
+            <img
+              src="./assets/images/twitter_logo.svg"
+              alt="twitter_logo"
+              width="28px"
+            />
+          </a>
+          <a href="#" class="social-icon" aria-label="youtube">
+            <img
+              src="./assets/images/youtube_logo.svg"
+              alt="youtube_logo"
+              width="24px"
+            />
+          </a>
+        </section>
+
+        <section class="footer-links">
+          <a href="#" class="footer-link">화면 해설</a>
+          <a href="#" class="footer-link">고객 센터</a>
+          <a href="#" class="footer-link">기프트카드</a>
+          <a href="#" class="footer-link">미디어 센터</a>
+
+          <a href="#" class="footer-link">투자 정보(IR)</a>
+          <a href="#" class="footer-link">입사 정보</a>
+          <a href="#" class="footer-link">이용 약관</a>
+          <a href="#" class="footer-link">개인정보</a>
+
+          <a href="#" class="footer-link">법적 고지</a>
+          <a href="#" class="footer-link">쿠키 설정</a>
+          <a href="#" class="footer-link">회사 정보</a>
+          <a href="#" class="footer-link">문의하기</a>
+        </section>
+
+        <section class="footer-company-info">
+          <p>
+            넷플릭스서비스코리아 유한회사 통신판매업신고번호:
+            제2018-서울종로-0426호 전화번호: 00-308-321-0161 (수신자 부담)
+          </p>
+          <p>대표: 레지널드 숀 톰프슨</p>
+          <p>이메일 주소: korea@netflix.com</p>
+          <p>
+            주소: 대한민국 서울특별시 종로구 우정국로 26, 센트로폴리스 A동 20층
+            우편번호 03161
+          </p>
+          <p>사업자등록번호: 165-87-00119</p>
+          <p>클라우드 호스팅: Amazon Web Services Inc.</p>
+          <a href="#" class="legal-link">공정거래위원회 웹사이트</a>
+        </section>
+      </footer>
+    </div>
+  </body>
+</html>

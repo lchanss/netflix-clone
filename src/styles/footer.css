@@ -1,0 +1,47 @@
+.footer {
+  margin-top: 100px;
+  padding: 20px 260px;
+}
+
+.footer .footer-social {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0 4px;
+}
+
+.footer .footer-links {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px 40px;
+  margin-bottom: 28px;
+}
+
+.footer .footer-link {
+  color: var(--neutral-400);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  cursor: pointer;
+  width: fit-content;
+  font-size: 13px;
+}
+
+.footer .footer-link:hover {
+  text-decoration: underline;
+}
+
+.footer .footer-company-info {
+  font-size: 11px;
+  color: var(--neutral-500);
+  line-height: 1.6;
+  margin-bottom: 15px;
+
+  p {
+    margin-bottom: 4px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
