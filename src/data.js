@@ -17,7 +17,7 @@ export const carouselData = {
   content2: {
     title: "상상의 나래를 펼친 영화",
     itemsPerView: 6,
-    stepSize: 2,
+    stepSize: 6,
     items: [
       "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABW0zGMsApBfdegqOnWStN_u1cFN4xiIEvRJHACeFwDknZZ4TmRbbIRAqTnTC88GqS8tXtrN9TIfBA1n50vYJlQANloVjEHAHI89uu3CkcbxPglSa28OxNxcik0TNb3jJPEZ-XM0xfGB9WwlCKFaTk7GyTfhaqFmve2weQB0mgiripwYncw28fhM3HqjWa_Q.jpg?r=1e1",
       "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABWzh-KZ3hcI9QsjH2hssVP-aOWciJFXd8CicAXC9l1qS-rgdwUYFMWjyirUCPbbtul1P9rkWM543Q8JC3Reh2bpHPM8DxK69SzA.webp?r=af3",
