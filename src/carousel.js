@@ -1,7 +1,65 @@
-// carousel.js
+import { carouselData } from "./data.js";
+
 const carousels = new Map();
 
+// 캐러셀 HTML 생성
+function createCarouselHTML(carouselId, data) {
+  const { title, itemsPerView, stepSize, items } = data;
+
+  const carouselItemsHTML = items
+    .map(
+      (imageUrl, index) => `
+    <div class="carousel-item">
+      <img src="${imageUrl}" alt="영화썸네일 ${index + 1}" width="100%" />
+    </div>
+  `
+    )
+    .join("");
+
+  return `
+    <section class="content-row">
+      <h2 class="content-title">${title}</h2>
+      <div class="carousel-container" 
+           data-carousel="${carouselId}" 
+           data-items-per-view="${itemsPerView}" 
+           data-step-size="${stepSize}">
+        <div class="carousel-indicator"></div>
+        <div class="carousel-wrapper">
+          <div class="carousel-track">
+            ${carouselItemsHTML}
+          </div>
+        </div>
+        <button class="carousel-btn prev" data-direction="-1">
+          <img src="/src/assets/icons/arrow_left_icon.svg" alt="이전" width="64px" />
+        </button>
+        <button class="carousel-btn next" data-direction="1">
+          <img src="/src/assets/icons/arrow_right_icon.svg" alt="다음" width="64px" />
+        </button>
+      </div>
+    </section>
+  `;
+}
+
+// 모든 캐러셀 렌더링
+function renderCarousels(containerId = "catalog") {
+  const container = document.querySelector(`.${containerId}`);
+  if (!container) {
+    console.error(`Container with class '${containerId}' not found`);
+    return;
+  }
+
+  const carouselsHTML = Object.entries(carouselData)
+    .map(([carouselId, data]) => createCarouselHTML(carouselId, data))
+    .join("");
+
+  container.innerHTML = carouselsHTML;
+}
+
 function initCarousel() {
+  // 먼저 캐러셀들을 렌더링
+  renderCarousels();
+
+  // 렌더링된 캐러셀들을 초기화
   document.querySelectorAll(".carousel-container").forEach((container) => {
     const carouselId = setupCarousel(container);
 

@@ -1,0 +1,38 @@
+export const carouselData = {
+  content3: {
+    title: "꼭 챙겨보세요! 회원님을 위한 콘텐츠",
+    itemsPerView: 6,
+    stepSize: 3,
+    items: [
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABdMan0YLQUPDfRJX9bQxq1E6K-MYpxpkiZNUWCeTu7Icrw8Sxqg_-_dr4_xGbTcShoAK_X4XC5Xum8kf_sFuACVlnKfHfyF7LxzZw7bq824lLFdmAAiZ_cLTuCY3WWx-6wkWpTXaO3po9b3OiIwrQWNsRqvQL5NjemuvUt5Zj1a-DOBzWIaAdWPhv_H-6sPvN1k6nLk2sJbdR14GcxurqClS5fsOF-rsbRHnJ9h7r5xIrGh_SwCyx164EMYQItvpsaXW-SkGKZjrg8pR-reNzpopRJE0CvLvuOHJiwN30ja8J54fI_Z_YfwRV2vxUBGgeNVg66M2RJ1MU-girrbFM4IK4t7CdEj4xY8Bo0--eF3WyRFnVcwS.jpg?r=e56",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABSiHvu3mufZdCPLEwW987YZAbjcszTCxNwqr-5l2ztUED1yB23iKGjxy86tvHemA1C3ln5GJWz79P3n6plnQpHmauIrbPOnshAWAA2Na83qh9RrUdHrg07_02kjqHOI569aKcy6EnrdD_N4QomCC_IRWtmFvbHXfa2aKBQBB7sOt0IRCu2uHBt-nSzDAu4SSdaV41IxeUlrgY-VK233qB764JHeiYA7StIaQ5CoBddJgvRmFVBAYrgA_Q9GfzGYmQAna2p3AFQe7ytZ1cN6G2sjN4IXk0IhXihGRAQsv4Osg-d-6gXXov4oXn5ZVDD1DTLMLG9OCu3m_5OLD_UO9LyMC2RnJ9Z12yduQ53U93TaFqRRU1auQxFJQoG89dwsFcy20Wx5h68cENHaV5wU.webp?r=e1b",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABd72e4Q7gaKlUpFN5gxfRDifykAmS4-nEzQv93R9pxbSPT8ptrmyaGmrzo7C8r4IZ3NqIApvCCeRnLt5HHVxHZ-lY82Fa3LQTolDQyOtqxDnfR7TICy1hCi370XGP2Ur_P41lR42wDKvkFn9f-NO-qWhP6kgDC8F8e4.webp?r=6b9",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABTsNe1v997HHn-SicDmoG9RR6Q9UBYluxoPY_DVD7JbH_H-yY_4Yp-b6aTde2yuwI7siQpGKbK76Adj-Qo6Dr7KE9UCHxpvdt_c.webp?r=2f1",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABd98oKgCH9JvkO60g69tQa7G98g6iIPKJY3EeKrDoxx4fuJZJ22WuDyVEEGykc9mGgQZHFMUZeS5Jn3HdrQOD_AVxYYRCcpjBQQajXeIomJVTIkH9oUZhOAWe57dkaVZLQl1.jpg?r=c46",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABfbKKCZN-v89hwFCq2X7HhE3Gs8YZc5ZQ08QITvMNB7lj-AZ-nThRKBkZTzHj30Eqk4n3d49WY8vQencwp2pNCarwKN28Ep0cv4.webp?r=5d5",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABfbKKCZN-v89hwFCq2X7HhE3Gs8YZc5ZQ08QITvMNB7lj-AZ-nThRKBkZTzHj30Eqk4n3d49WY8vQencwp2pNCarwKN28Ep0cv4.webp?r=5d5",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABfbKKCZN-v89hwFCq2X7HhE3Gs8YZc5ZQ08QITvMNB7lj-AZ-nThRKBkZTzHj30Eqk4n3d49WY8vQencwp2pNCarwKN28Ep0cv4.webp?r=5d5",
+    ],
+  },
+  content2: {
+    title: "상상의 나래를 펼친 영화",
+    itemsPerView: 6,
+    stepSize: 2,
+    items: [
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABW0zGMsApBfdegqOnWStN_u1cFN4xiIEvRJHACeFwDknZZ4TmRbbIRAqTnTC88GqS8tXtrN9TIfBA1n50vYJlQANloVjEHAHI89uu3CkcbxPglSa28OxNxcik0TNb3jJPEZ-XM0xfGB9WwlCKFaTk7GyTfhaqFmve2weQB0mgiripwYncw28fhM3HqjWa_Q.jpg?r=1e1",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABWzh-KZ3hcI9QsjH2hssVP-aOWciJFXd8CicAXC9l1qS-rgdwUYFMWjyirUCPbbtul1P9rkWM543Q8JC3Reh2bpHPM8DxK69SzA.webp?r=af3",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABe9_jeEogOs9rjG98XqIg97L7XaVNyphfwhMIXDtUcu_2FA21mqQNUFPwEGdN5zZYFireR2vLCloPmyxS_8OKmrX6Irgwj7XzP0.webp?r=c82",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABRKx8FujhtWGNKnGLUPJe1qic5b5IqiE5ch0ODkcM2WutFhsLJo2CWwe0ekF7Zce_ipFscKxqXAErXhcFBWMX0EHnwKbqD5r6PM.webp?r=65a",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABf2i8dFP-LggsdTuISzEAgQWom9nPJDm-Mvd2XSkVHG_p63RpYZX2m1grNETxRODp3JcpAuaezIP86qcRdEWTgo1iNmqMe8vV7I.webp?r=8ee",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXbaZMtlHNs5QasgMfRgOrU9PwfAxWIpaqZm8o04v5Nimbydww3ZxNP0OzlXC2Ic2J3uDYBchC7o6G9jpiGYWGhbmjRlWyjItoU.webp?r=772",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXbaZMtlHNs5QasgMfRgOrU9PwfAxWIpaqZm8o04v5Nimbydww3ZxNP0OzlXC2Ic2J3uDYBchC7o6G9jpiGYWGhbmjRlWyjItoU.webp?r=772",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXbaZMtlHNs5QasgMfRgOrU9PwfAxWIpaqZm8o04v5Nimbydww3ZxNP0OzlXC2Ic2J3uDYBchC7o6G9jpiGYWGhbmjRlWyjItoU.webp?r=772",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXbaZMtlHNs5QasgMfRgOrU9PwfAxWIpaqZm8o04v5Nimbydww3ZxNP0OzlXC2Ic2J3uDYBchC7o6G9jpiGYWGhbmjRlWyjItoU.webp?r=772",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXbaZMtlHNs5QasgMfRgOrU9PwfAxWIpaqZm8o04v5Nimbydww3ZxNP0OzlXC2Ic2J3uDYBchC7o6G9jpiGYWGhbmjRlWyjItoU.webp?r=772",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXbaZMtlHNs5QasgMfRgOrU9PwfAxWIpaqZm8o04v5Nimbydww3ZxNP0OzlXC2Ic2J3uDYBchC7o6G9jpiGYWGhbmjRlWyjItoU.webp?r=772",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXbaZMtlHNs5QasgMfRgOrU9PwfAxWIpaqZm8o04v5Nimbydww3ZxNP0OzlXC2Ic2J3uDYBchC7o6G9jpiGYWGhbmjRlWyjItoU.webp?r=772",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXbaZMtlHNs5QasgMfRgOrU9PwfAxWIpaqZm8o04v5Nimbydww3ZxNP0OzlXC2Ic2J3uDYBchC7o6G9jpiGYWGhbmjRlWyjItoU.webp?r=772",
+      "https://occ-0-8123-325.1.nflxso.net/dnm/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABXbaZMtlHNs5QasgMfRgOrU9PwfAxWIpaqZm8o04v5Nimbydww3ZxNP0OzlXC2Ic2J3uDYBchC7o6G9jpiGYWGhbmjRlWyjItoU.webp?r=772",
+    ],
+  },
+};

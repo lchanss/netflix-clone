@@ -1,4 +1,3 @@
-// app.js
 import { initCarousel } from "./carousel.js";
 import { initHeader } from "./header.js";
 
