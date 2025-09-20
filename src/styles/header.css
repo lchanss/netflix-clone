@@ -2,12 +2,18 @@
   height: 68px;
   background-color: var(--black);
   display: flex;
+  width: 100%;
   padding: 0 60px;
   gap: 44px;
   align-items: center;
-  position: sticky;
+  position: fixed;
   z-index: 10;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+
+  &.scrolled {
+    background-color: var(--black);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
 }
 
 .main-header .logo {
