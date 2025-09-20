@@ -1,12 +1,12 @@
-// carousel.js
 const carousels = new Map();
 
 function initCarousel() {
-  // 모든 캐러셀 초기화
   document.querySelectorAll(".carousel-container").forEach((container) => {
     const carouselId = setupCarousel(container);
 
-    // 각 캐러셀의 버튼에 이벤트 리스너 등록
+    // 인디케이터 생성
+    createIndicator(container);
+
     container.querySelectorAll(".carousel-btn").forEach((button) => {
       button.addEventListener("click", (e) => {
         const direction = parseInt(e.currentTarget.dataset.direction);
@@ -14,9 +14,6 @@ function initCarousel() {
       });
     });
   });
-
-  updateItemsPerView();
-  window.addEventListener("resize", updateItemsPerView);
 }
 
 function setupCarousel(container) {
@@ -30,18 +27,24 @@ function setupCarousel(container) {
   return id;
 }
 
-function updateItemsPerView() {
-  const width = window.innerWidth;
-  let itemsPerView = 6;
+function createIndicator(container) {
+  const carousel = carousels.get(container.dataset.carousel);
+  const items = container.querySelectorAll(".carousel-item");
+  const indicator = container.querySelector(".carousel-indicator");
 
-  if (width <= 600) itemsPerView = 3;
-  else if (width <= 900) itemsPerView = 4;
-  else if (width <= 1200) itemsPerView = 5;
+  // 인디케이터 개수 = 전체 아이템 - 한번에 보이는 개수 + 1
+  const totalIndicators = Math.max(1, items.length - carousel.itemsPerView + 1);
 
-  carousels.forEach((carousel) => {
-    carousel.itemsPerView = itemsPerView;
-    updateCarouselButtons(carousel);
-  });
+  // 기존 점들 제거
+  indicator.innerHTML = "";
+
+  // 새로운 점들 생성
+  for (let i = 0; i < totalIndicators; i++) {
+    const dot = document.createElement("div");
+    dot.className = "dot";
+    if (i === 0) dot.classList.add("active");
+    indicator.appendChild(dot);
+  }
 }
 
 function moveCarousel(carouselId, direction) {
@@ -54,8 +57,10 @@ function moveCarousel(carouselId, direction) {
   const totalItems = items.length;
   const maxIndex = Math.max(0, totalItems - carousel.itemsPerView);
 
+  // 1개씩 이동
   let newIndex = carousel.currentIndex + direction;
 
+  // 경계 체크
   if (newIndex < 0) newIndex = 0;
   if (newIndex > maxIndex) newIndex = maxIndex;
 
@@ -65,6 +70,7 @@ function moveCarousel(carouselId, direction) {
   track.style.transform = `translateX(${moveAmount}%)`;
 
   updateCarouselButtons(carousel);
+  updateIndicator(carousel);
 }
 
 function updateCarouselButtons(carousel) {
@@ -77,6 +83,18 @@ function updateCarouselButtons(carousel) {
 
   prevBtn.disabled = carousel.currentIndex <= 0;
   nextBtn.disabled = carousel.currentIndex >= maxIndex;
+}
+
+function updateIndicator(carousel) {
+  const indicator = carousel.container.querySelector(".carousel-indicator");
+  if (!indicator) return;
+
+  const dots = indicator.querySelectorAll(".dot");
+
+  // currentIndex가 바로 현재 활성화되어야 할 인디케이터 번호
+  dots.forEach((dot, index) => {
+    dot.classList.toggle("active", index === carousel.currentIndex);
+  });
 }
 
 export { initCarousel };
