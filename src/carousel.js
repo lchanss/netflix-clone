@@ -90,24 +90,66 @@ function setupCarousel(container) {
     stepSize = itemsPerView;
   }
 
+  // 무한 캐러셀을 위한 복제 아이템 생성
+  createClonedItems(container, itemsPerView);
+
+  const track = container.querySelector(".carousel-track");
+  const totalOriginalItems = track.querySelectorAll(
+    ".carousel-item:not(.clone)"
+  ).length;
+
   carousels.set(id, {
     currentIndex: 0,
+    realCurrentIndex: 0, // 실제 원본 아이템의 인덱스
     itemsPerView: itemsPerView,
     stepSize: stepSize,
     container: container,
+    totalOriginalItems: totalOriginalItems,
+    isTransitioning: false,
   });
 
-  updateCarouselButtons(carousels.get(id));
+  // 초기 위치 설정 (복제된 첫 번째 세트로 이동)
+  const carousel = carousels.get(id);
+  carousel.currentIndex = itemsPerView;
+  updateTrackPosition(carousel, false); // 애니메이션 없이 초기 위치 설정
+
+  updateCarouselButtons(carousel);
   return id;
+}
+
+// 무한 스크롤을 위한 복제 아이템 생성
+function createClonedItems(container, itemsPerView) {
+  const track = container.querySelector(".carousel-track");
+  const items = Array.from(track.querySelectorAll(".carousel-item"));
+
+  // 앞쪽에 마지막 아이템들 복제
+  const frontClones = items.slice(-itemsPerView).map((item) => {
+    const clone = item.cloneNode(true);
+    clone.classList.add("clone");
+    return clone;
+  });
+
+  // 뒤쪽에 첫 번째 아이템들 복제
+  const backClones = items.slice(0, itemsPerView).map((item) => {
+    const clone = item.cloneNode(true);
+    clone.classList.add("clone");
+    return clone;
+  });
+
+  // DOM에 복제된 아이템들 추가
+  frontClones.forEach((clone) => track.insertBefore(clone, track.firstChild));
+  backClones.forEach((clone) => track.appendChild(clone));
 }
 
 function createIndicator(container) {
   const carousel = carousels.get(container.dataset.carousel);
-  const items = container.querySelectorAll(".carousel-item");
+  const originalItems = container.querySelectorAll(
+    ".carousel-item:not(.clone)"
+  );
   const indicator = container.querySelector(".carousel-indicator");
 
   // 실제로 이동 가능한 스텝 수 계산
-  const totalItems = items.length;
+  const totalItems = originalItems.length;
   const maxIndex = Math.max(0, totalItems - carousel.itemsPerView);
 
   // 가능한 모든 위치를 stepSize 단위로 나누어 계산
@@ -137,40 +179,127 @@ function createIndicator(container) {
 
 function moveCarousel(carouselId, direction) {
   const carousel = carousels.get(carouselId);
-  if (!carousel) return;
+  if (!carousel || carousel.isTransitioning) return;
 
-  const track = carousel.container.querySelector(".carousel-track");
-  const items = track.querySelectorAll(".carousel-item");
+  carousel.isTransitioning = true;
 
-  const totalItems = items.length;
+  const totalItems = carousel.totalOriginalItems;
   const maxIndex = Math.max(0, totalItems - carousel.itemsPerView);
 
-  // stepSize만큼 이동
-  let newIndex = carousel.currentIndex + direction * carousel.stepSize;
+  // 새로운 realCurrentIndex 계산 (원본 아이템 기준)
+  let newRealIndex = carousel.realCurrentIndex + direction * carousel.stepSize;
 
-  // 경계 체크
-  if (newIndex < 0) newIndex = 0;
-  if (newIndex > maxIndex) newIndex = maxIndex;
+  // 경계 체크 및 조정
+  if (direction > 0) {
+    // 다음으로 이동할 때: maxIndex를 초과하지 않도록 조정
+    if (newRealIndex > maxIndex) {
+      newRealIndex = maxIndex;
+    }
+  } else {
+    // 이전으로 이동할 때: 0 미만으로 가지 않도록 조정
+    if (newRealIndex < 0) {
+      newRealIndex = 0;
+    }
+  }
 
-  carousel.currentIndex = newIndex;
+  // 실제 이동 거리 계산
+  const actualStep = newRealIndex - carousel.realCurrentIndex;
 
-  const moveAmount = -(newIndex * (100 / carousel.itemsPerView));
-  track.style.transform = `translateX(${moveAmount}%)`;
+  // 무한 루프 체크: 경계에 도달했는데 더 이동하려고 하는 경우
+  const isAtEnd = carousel.realCurrentIndex === maxIndex && direction > 0;
+  const isAtStart = carousel.realCurrentIndex === 0 && direction < 0;
+
+  if (isAtEnd) {
+    // 끝에서 다음 버튼 클릭 시 처음으로 이동
+    carousel.realCurrentIndex = 0;
+    carousel.currentIndex = carousel.itemsPerView; // 원본 영역의 시작
+  } else if (isAtStart) {
+    // 시작에서 이전 버튼 클릭 시 끝으로 이동
+    carousel.realCurrentIndex = maxIndex;
+    carousel.currentIndex = carousel.itemsPerView + maxIndex; // 원본 영역의 끝
+  } else {
+    // 일반적인 이동
+    carousel.currentIndex += actualStep;
+    carousel.realCurrentIndex = newRealIndex;
+  }
+
+  updateTrackPosition(carousel, true);
+
+  // 경계 체크 및 무한 루프 처리
+  setTimeout(() => {
+    handleInfiniteLoop(carousel);
+    carousel.isTransitioning = false;
+  }, 400); // CSS transition 시간과 맞춤
 
   updateCarouselButtons(carousel);
   updateIndicator(carousel);
 }
 
+function updateTrackPosition(carousel, animate = true) {
+  const track = carousel.container.querySelector(".carousel-track");
+
+  if (!animate) {
+    track.style.transition = "none";
+  } else {
+    track.style.transition = "transform 0.4s ease-in-out";
+  }
+
+  const moveAmount = -(carousel.currentIndex * (100 / carousel.itemsPerView));
+  track.style.transform = `translateX(${moveAmount}%)`;
+
+  if (!animate) {
+    // 강제로 리플로우를 발생시켜 스타일 적용을 보장
+    track.offsetHeight;
+    track.style.transition = "transform 0.4s ease-in-out";
+  }
+}
+
+function handleInfiniteLoop(carousel) {
+  const track = carousel.container.querySelector(".carousel-track");
+  const originalItemsCount = carousel.totalOriginalItems;
+  const maxRealIndex = Math.max(0, originalItemsCount - carousel.itemsPerView);
+
+  // 앞쪽 경계를 넘어간 경우 (realCurrentIndex가 0 미만)
+  if (carousel.realCurrentIndex < 0) {
+    // 뒤쪽 끝으로 이동
+    carousel.realCurrentIndex = maxRealIndex;
+    carousel.currentIndex =
+      originalItemsCount +
+      carousel.itemsPerView -
+      (maxRealIndex - carousel.realCurrentIndex);
+    updateTrackPosition(carousel, false);
+  }
+
+  // 뒤쪽 경계를 넘어간 경우 (realCurrentIndex가 maxRealIndex 초과)
+  else if (carousel.realCurrentIndex > maxRealIndex) {
+    // 앞쪽 시작으로 이동
+    carousel.realCurrentIndex = 0;
+    carousel.currentIndex = carousel.itemsPerView;
+    updateTrackPosition(carousel, false);
+  }
+
+  // 현재 DOM 위치가 복제 영역에 있는 경우 원본 영역으로 이동
+  else if (carousel.currentIndex < carousel.itemsPerView) {
+    // 앞쪽 복제 영역에 있음 - 뒤쪽 원본으로 이동
+    carousel.currentIndex = carousel.itemsPerView + carousel.realCurrentIndex;
+    updateTrackPosition(carousel, false);
+  } else if (
+    carousel.currentIndex >=
+    originalItemsCount + carousel.itemsPerView
+  ) {
+    // 뒤쪽 복제 영역에 있음 - 앞쪽 원본으로 이동
+    carousel.currentIndex = carousel.itemsPerView + carousel.realCurrentIndex;
+    updateTrackPosition(carousel, false);
+  }
+}
+
 function updateCarouselButtons(carousel) {
   const prevBtn = carousel.container.querySelector(".carousel-btn.prev");
   const nextBtn = carousel.container.querySelector(".carousel-btn.next");
-  const items = carousel.container.querySelectorAll(".carousel-item");
 
-  const totalItems = items.length;
-  const maxIndex = Math.max(0, totalItems - carousel.itemsPerView);
-
-  prevBtn.disabled = carousel.currentIndex <= 0;
-  nextBtn.disabled = carousel.currentIndex >= maxIndex;
+  // 무한 캐러셀에서는 버튼을 항상 활성화
+  prevBtn.disabled = false;
+  nextBtn.disabled = false;
 }
 
 function updateIndicator(carousel) {
@@ -178,10 +307,7 @@ function updateIndicator(carousel) {
   if (!indicator) return;
 
   const dots = indicator.querySelectorAll(".dot");
-
-  // createIndicator에서 사용한 것과 동일한 로직으로 현재 위치 찾기
-  const totalItems =
-    carousel.container.querySelectorAll(".carousel-item").length;
+  const totalItems = carousel.totalOriginalItems;
   const maxIndex = Math.max(0, totalItems - carousel.itemsPerView);
 
   let possiblePositions = [];
@@ -193,10 +319,18 @@ function updateIndicator(carousel) {
     possiblePositions.push(maxIndex);
   }
 
-  // 현재 인덱스가 possiblePositions 배열의 몇 번째인지 찾기
-  const currentPage = possiblePositions.findIndex(
-    (pos) => pos === carousel.currentIndex
-  );
+  // 현재 실제 인덱스를 기준으로 페이지 계산
+  let adjustedIndex = carousel.realCurrentIndex;
+
+  // stepSize 단위로 정렬된 인덱스 찾기
+  let currentPage = 0;
+  for (let i = 0; i < possiblePositions.length; i++) {
+    if (adjustedIndex >= possiblePositions[i]) {
+      currentPage = i;
+    } else {
+      break;
+    }
+  }
 
   dots.forEach((dot, index) => {
     dot.classList.toggle("active", index === currentPage);
