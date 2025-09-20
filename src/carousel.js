@@ -1,18 +1,35 @@
-// 캐러셀 상태를 맵으로 관리
+// carousel.js
 const carousels = new Map();
 
-// 캐러셀 초기화
-function initCarousel(container) {
+function initCarousel() {
+  // 모든 캐러셀 초기화
+  document.querySelectorAll(".carousel-container").forEach((container) => {
+    const carouselId = setupCarousel(container);
+
+    // 각 캐러셀의 버튼에 이벤트 리스너 등록
+    container.querySelectorAll(".carousel-btn").forEach((button) => {
+      button.addEventListener("click", (e) => {
+        const direction = parseInt(e.currentTarget.dataset.direction);
+        moveCarousel(carouselId, direction);
+      });
+    });
+  });
+
+  updateItemsPerView();
+  window.addEventListener("resize", updateItemsPerView);
+}
+
+function setupCarousel(container) {
   const id = container.dataset.carousel || Math.random().toString(36);
   carousels.set(id, {
     currentIndex: 0,
     itemsPerView: 6,
     container: container,
   });
+  updateCarouselButtons(carousels.get(id));
   return id;
 }
 
-// 화면 크기에 따른 아이템 개수 조정
 function updateItemsPerView() {
   const width = window.innerWidth;
   let itemsPerView = 6;
@@ -27,7 +44,6 @@ function updateItemsPerView() {
   });
 }
 
-// 캐러셀 이동
 function moveCarousel(carouselId, direction) {
   const carousel = carousels.get(carouselId);
   if (!carousel) return;
@@ -51,7 +67,6 @@ function moveCarousel(carouselId, direction) {
   updateCarouselButtons(carousel);
 }
 
-// 버튼 상태 업데이트
 function updateCarouselButtons(carousel) {
   const prevBtn = carousel.container.querySelector(".carousel-btn.prev");
   const nextBtn = carousel.container.querySelector(".carousel-btn.next");
@@ -64,22 +79,4 @@ function updateCarouselButtons(carousel) {
   nextBtn.disabled = carousel.currentIndex >= maxIndex;
 }
 
-// 초기 설정
-window.addEventListener("load", () => {
-  // 모든 캐러셀 초기화
-  document.querySelectorAll(".carousel-container").forEach((container) => {
-    const carouselId = initCarousel(container);
-
-    // 각 캐러셀의 버튼에 이벤트 리스너 등록
-    container.querySelectorAll(".carousel-btn").forEach((button) => {
-      button.addEventListener("click", (e) => {
-        const direction = parseInt(e.currentTarget.dataset.direction);
-        moveCarousel(carouselId, direction);
-      });
-    });
-  });
-
-  updateItemsPerView();
-});
-
-window.addEventListener("resize", updateItemsPerView);
+export { initCarousel };
