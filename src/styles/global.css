@@ -12,6 +12,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  transition: transform 0.2s ease-in-out;
 }
 
 html,
@@ -34,12 +35,7 @@ button {
   cursor: pointer;
 }
 
-button:focus {
-  outline: 2px solid #007acc;
-  outline-offset: 2px;
-}
-
 main {
   height: 100%;
-  padding: 0 60px;
+  padding-top: 68px;
 }

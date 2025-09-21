@@ -1,0 +1,141 @@
+.catalog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  z-index: 100;
+}
+
+.content-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  padding-left: 60px;
+}
+
+.carousel-container {
+  position: relative;
+}
+
+.carousel-wrapper {
+  overflow: hidden;
+  padding-left: 60px;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.4s ease-in-out;
+  gap: 8px;
+  padding-right: 60px;
+}
+
+.carousel-item {
+  flex: 0 0 calc((100% - 20px) / 6); /* 6개씩 보이게 */
+  min-width: 0;
+}
+
+.carousel-item img {
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: block;
+}
+
+.carousel-item img:hover {
+  transform: scale(1.05);
+}
+
+/* 화살표 버튼 */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  width: 60px;
+  height: 100%;
+  cursor: pointer;
+  font-size: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.carousel-btn:hover {
+  background: rgba(0, 0, 0, 0.4);
+
+  img {
+    transform: scale(1.2);
+  }
+}
+
+.carousel-container:hover .carousel-btn {
+  opacity: 1;
+}
+
+.carousel-btn.prev {
+  left: 0;
+}
+
+.carousel-btn.next {
+  right: 0;
+}
+
+.carousel-btn:disabled {
+  display: none;
+}
+
+.carousel-item.ranked {
+  border-radius: 0 4px 4px 0;
+  display: flex;
+  position: relative;
+  align-items: center;
+
+  .rank {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 148px;
+    font-weight: 900;
+    color: var(--neutral-600);
+    position: absolute;
+    width: 110px;
+    top: -56px;
+    left: 16px;
+    text-shadow: -4px 0px var(--neutral-600), 0px 4px var(--neutral-600),
+      4px 0px var(--neutral-600), 0px -4px var(--neutral-600);
+    color: var(--black);
+  }
+
+  img {
+    position: relative;
+    z-index: 10;
+    margin-left: 110px;
+    width: 96px;
+    height: 100%;
+  }
+}
+
+/* 페이지 인디케이터 */
+.carousel-indicator {
+  position: absolute;
+  top: -16px;
+  right: 60px;
+  display: flex;
+  gap: 4px;
+  z-index: 4;
+}
+
+.carousel-indicator .dot {
+  width: 12px;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: background-color 0.3s ease;
+}
+
+.carousel-indicator .dot.active {
+  background-color: rgba(255, 255, 255, 0.9);
+}
