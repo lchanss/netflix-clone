@@ -108,12 +108,13 @@ function setupCarousel(container) {
     isTransitioning: false,
   });
 
-  // 초기 위치 설정 (복제된 첫 번째 세트로 이동)
+  // 초기 위치 설정
   const carousel = carousels.get(id);
-  carousel.currentIndex = itemsPerView;
+  // 초기에는 원본 영역의 시작 위치 (복제본 사용 안 함)
+  carousel.currentIndex = 0;
   updateTrackPosition(carousel, false); // 애니메이션 없이 초기 위치 설정
-
   updateCarouselButtons(carousel);
+
   return id;
 }
 
@@ -173,7 +174,7 @@ function createIndicator(container) {
 
   const maxSteps = possiblePositions.length;
 
-  // 점들 생성
+  // 점들 생성 (한 번만)
   for (let i = 0; i < maxSteps; i++) {
     const dot = document.createElement("div");
     dot.className = "dot";
@@ -260,6 +261,7 @@ function snapToOriginalPosition(carousel) {
 
   track.style.transform = `translateX(-${moveDistance}px)`;
 
+  track.style.transition = "transform 0.4s ease-in-out";
   carousel.willSnapToOriginal = false;
 }
 
@@ -278,15 +280,37 @@ function updateTrackPosition(carousel, animate = true) {
   const moveDistance = carousel.currentIndex * (itemWidth + gap);
 
   track.style.transform = `translateX(-${moveDistance}px)`;
+
+  if (!animate) {
+    track.style.transition = "transform 0.4s ease-in-out";
+  }
 }
 
 function updateCarouselButtons(carousel) {
   const prevBtn = carousel.container.querySelector(".carousel-btn.prev");
   const nextBtn = carousel.container.querySelector(".carousel-btn.next");
 
-  // 무한 캐러셀에서는 버튼을 항상 활성화
-  prevBtn.disabled = false;
-  nextBtn.disabled = false;
+  // 디버깅용 로그
+  console.log("updateCarouselButtons 호출:", {
+    hasStartedMoving: carousel.hasStartedMoving,
+    realCurrentIndex: carousel.realCurrentIndex,
+    carouselId: carousel.container.dataset.carousel,
+  });
+
+  if (!carousel.hasStartedMoving) {
+    // 아직 이동하지 않았다면 일반 캐러셀처럼 동작
+    prevBtn.disabled = carousel.realCurrentIndex <= 0;
+    nextBtn.disabled = false; // 다음 버튼은 항상 활성화 (무한 루프 진입을 위해)
+    console.log("일반 캐러셀 모드:", {
+      prevDisabled: prevBtn.disabled,
+      nextDisabled: nextBtn.disabled,
+    });
+  } else {
+    // 한 번이라도 이동했다면 무한 캐러셀로 동작 (버튼 항상 활성화)
+    prevBtn.disabled = false;
+    nextBtn.disabled = false;
+    console.log("무한 캐러셀 모드: 모든 버튼 활성화");
+  }
 }
 
 function updateIndicator(carousel) {
