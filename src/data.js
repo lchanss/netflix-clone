@@ -1,5 +1,5 @@
 export const carouselData = {
-  content3: {
+  content1: {
     title: "꼭 챙겨보세요! 회원님을 위한 콘텐츠",
     itemsPerView: 6,
     stepSize: 3,
@@ -28,6 +28,23 @@ export const carouselData = {
       "/src/assets/images/movie_thumbnail8.webp",
       "/src/assets/images/movie_thumbnail9.webp",
       "/src/assets/images/movie_thumbnail10.webp",
+    ],
+  },
+  content3: {
+    title: "어워드 수상 영화",
+    itemsPerView: 6,
+    stepSize: 5,
+    items: [
+      "/src/assets/images/movie_thumbnail6.webp",
+      "/src/assets/images/movie_thumbnail7.webp",
+      "/src/assets/images/movie_thumbnail8.webp",
+      "/src/assets/images/movie_thumbnail9.webp",
+      "/src/assets/images/movie_thumbnail10.webp",
+      "/src/assets/images/movie_thumbnail1.webp",
+      "/src/assets/images/movie_thumbnail2.webp",
+      "/src/assets/images/movie_thumbnail3.webp",
+      "/src/assets/images/movie_thumbnail4.webp",
+      "/src/assets/images/movie_thumbnail5.webp",
     ],
   },
 };
