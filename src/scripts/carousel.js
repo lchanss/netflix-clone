@@ -1,4 +1,4 @@
-import { carouselData } from "./data.js";
+import { carouselData } from "../data.js";
 
 const carousels = new Map();
 
