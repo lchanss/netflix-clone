@@ -1,43 +1,74 @@
-import { carouselData } from "../data.js";
+import { carouselsData } from "../data.ts";
+import type { Carousel, CarouselData } from "../types.ts";
 
-const carousels = new Map();
+const carousels = new Map<string, Carousel>();
 
-// 캐러셀 HTML 생성
-function createCarouselHTML(carouselId, data) {
-  const { title, itemsPerView, stepSize, items } = data;
-
-  const carouselItemsHTML = items
-    .map(
-      (imageUrl, index) => `
+function createCarouselItem(imageUrl: string, index: number) {
+  return `
     <div class="carousel-item">
       <img src="${imageUrl}" alt="영화썸네일 ${index + 1}" width="100%" />
     </div>
-  `
-    )
-    .join("");
+  `;
+}
 
+function createCarouselButtons(): string {
+  return `
+    <button class="carousel-btn prev" data-direction="-1">
+      <img src="/icons/arrow_left_icon.svg" alt="이전" width="64px" />
+    </button>
+    <button class="carousel-btn next" data-direction="1">
+      <img src="/icons/arrow_right_icon.svg" alt="다음" width="64px" />
+    </button>
+  `;
+}
+
+function createCarouselContainer(
+  carouselId: string,
+  itemsPerView: number,
+  stepSize: number,
+  carouselItemsHTML: string
+) {
+  return `
+    <div class="carousel-container" 
+         data-carousel="${carouselId}" 
+         data-items-per-view="${itemsPerView}" 
+         data-step-size="${stepSize}">
+      <div class="carousel-indicator"></div>
+      <div class="carousel-wrapper">
+        <div class="carousel-track">
+          ${carouselItemsHTML}
+        </div>
+      </div>
+      ${createCarouselButtons()}
+    </div>
+  `;
+}
+
+function createCarouselSection(title: string, carouselContainerHtml: string) {
   return `
     <section class="content-row">
       <h2 class="content-title">${title}</h2>
-      <div class="carousel-container" 
-           data-carousel="${carouselId}" 
-           data-items-per-view="${itemsPerView}" 
-           data-step-size="${stepSize}">
-        <div class="carousel-indicator"></div>
-        <div class="carousel-wrapper">
-          <div class="carousel-track">
-            ${carouselItemsHTML}
-          </div>
-        </div>
-        <button class="carousel-btn prev" data-direction="-1">
-          <img src="/src/assets/icons/arrow_left_icon.svg" alt="이전" width="64px" />
-        </button>
-        <button class="carousel-btn next" data-direction="1">
-          <img src="/src/assets/icons/arrow_right_icon.svg" alt="다음" width="64px" />
-        </button>
-      </div>
+      ${carouselContainerHtml}
     </section>
   `;
+}
+
+// 캐러셀 HTML 생성
+function createCarouselHTML(carouselId: string, data: CarouselData) {
+  const { title, itemsPerView, stepSize, items } = data;
+
+  const carouselItemsHTML = items
+    .map((imageUrl, index) => createCarouselItem(imageUrl, index))
+    .join("");
+
+  const carouselContainerHTML = createCarouselContainer(
+    carouselId,
+    itemsPerView,
+    stepSize,
+    carouselItemsHTML
+  );
+
+  return createCarouselSection(title, carouselContainerHTML);
 }
 
 // 모든 캐러셀 렌더링
@@ -48,7 +79,7 @@ function renderCarousels(containerId = "catalog") {
     return;
   }
 
-  const carouselsHTML = Object.entries(carouselData)
+  const carouselsHTML = Object.entries(carouselsData)
     .map(([carouselId, data]) => createCarouselHTML(carouselId, data))
     .join("");
 
@@ -56,31 +87,43 @@ function renderCarousels(containerId = "catalog") {
 }
 
 function initCarousel() {
-  // 먼저 캐러셀들을 렌더링
+  // 먼저 캐러셀들 렌더링
   renderCarousels();
 
-  // 렌더링된 캐러셀들을 초기화
-  document.querySelectorAll(".carousel-container").forEach((container) => {
-    const carouselId = setupCarousel(container);
+  // 렌더링된 캐러셀들 초기화
+  document
+    .querySelectorAll<HTMLDivElement>(".carousel-container")
+    .forEach((container) => {
+      const carouselId = setupCarousel(container);
 
-    // 인디케이터 생성
-    createIndicator(container);
+      // 인디케이터 생성
+      createIndicator(container);
 
-    container.querySelectorAll(".carousel-btn").forEach((button) => {
-      button.addEventListener("click", (e) => {
-        const direction = parseInt(e.currentTarget.dataset.direction);
-        moveCarousel(carouselId, direction);
-      });
+      container
+        .querySelectorAll<HTMLButtonElement>(".carousel-btn")
+        .forEach((button) => {
+          button.addEventListener("click", (e) => {
+            const currentTarget = e.currentTarget as HTMLButtonElement;
+            const direction = parseInt(currentTarget.dataset.direction || "0");
+            moveCarousel(carouselId, direction);
+          });
+        });
     });
-  });
 }
 
-function setupCarousel(container) {
+const ITEMES_PREVIEW_DEFAULT = 6;
+const STEP_SIZE_DEFAULT = 1;
+
+function setupCarousel(container: HTMLDivElement) {
   const id = container.dataset.carousel || Math.random().toString(36);
 
   // HTML에서 설정값 읽기 (기본값 설정)
-  const itemsPerView = parseInt(container.dataset.itemsPerView) || 6;
-  let stepSize = parseInt(container.dataset.stepSize) || 1;
+  const itemsPerView = parseInt(
+    container.dataset.itemsPerView ?? ITEMES_PREVIEW_DEFAULT.toString()
+  );
+  let stepSize = parseInt(
+    container.dataset.stepSize ?? STEP_SIZE_DEFAULT.toString()
+  );
 
   // 검증: stepSize가 itemsPerView보다 클 수 없음
   if (stepSize > itemsPerView) {
@@ -93,10 +136,10 @@ function setupCarousel(container) {
   // 무한 캐러셀을 위한 복제 아이템 생성
   createClonedItems(container, itemsPerView);
 
-  const track = container.querySelector(".carousel-track");
-  const totalOriginalItems = track.querySelectorAll(
-    ".carousel-item:not(.clone)"
-  ).length;
+  const track = container.querySelector<HTMLDivElement>(".carousel-track");
+  const totalOriginalItems =
+    track?.querySelectorAll<HTMLDivElement>(".carousel-item:not(.clone)")
+      .length ?? 0;
 
   carousels.set(id, {
     currentIndex: 0,
@@ -110,6 +153,11 @@ function setupCarousel(container) {
 
   // 초기 위치 설정 (원본 배열 첫 번째 아이템으로 이동)
   const carousel = carousels.get(id);
+
+  if (!carousel) {
+    throw new Error("캐러셀 초기화 실패");
+  }
+
   carousel.currentIndex = itemsPerView;
   updateTrackPosition(carousel, false); // 애니메이션 없이 초기 위치 설정
   updateCarouselButtons(carousel);
@@ -118,20 +166,22 @@ function setupCarousel(container) {
 }
 
 // 무한 스크롤을 위한 복제 아이템 생성
-function createClonedItems(container, itemsPerView) {
-  const track = container.querySelector(".carousel-track");
-  const items = Array.from(track.querySelectorAll(".carousel-item"));
+function createClonedItems(container: HTMLDivElement, itemsPerView: number) {
+  const track = container.querySelector<HTMLDivElement>(".carousel-track");
+  const items = Array.from(
+    track?.querySelectorAll<HTMLDivElement>(".carousel-item") ?? []
+  );
 
   // 앞쪽에 추가할 복제본: 마지막 itemsPerView개를 순서 그대로
   const frontClones = items.slice(-itemsPerView).map((item) => {
-    const clone = item.cloneNode(true);
+    const clone = item.cloneNode(true) as HTMLDivElement;
     clone.classList.add("clone");
     return clone;
   });
 
   // 뒤쪽에 추가할 복제본: 첫 번째 itemsPerView개를 순서 그대로
   const backClones = items.slice(0, itemsPerView).map((item) => {
-    const clone = item.cloneNode(true);
+    const clone = item.cloneNode(true) as HTMLDivElement;
     clone.classList.add("clone");
     return clone;
   });
@@ -145,16 +195,21 @@ function createClonedItems(container, itemsPerView) {
   backClones.forEach((clone) => backFragment.appendChild(clone));
 
   // 한 번에 DOM에 추가
-  track.insertBefore(frontFragment, track.firstChild);
-  track.appendChild(backFragment);
+  track?.insertBefore(frontFragment, track.firstChild);
+  track?.appendChild(backFragment);
 }
 
-function createIndicator(container) {
-  const carousel = carousels.get(container.dataset.carousel);
-  const originalItems = container.querySelectorAll(
+function createIndicator(container: HTMLDivElement) {
+  const carouselId = container.dataset.carousel ?? "";
+  const carousel = carousels.get(carouselId);
+  if (!carousel) return;
+
+  const originalItems = container.querySelectorAll<HTMLDivElement>(
     ".carousel-item:not(.clone)"
   );
-  const indicator = container.querySelector(".carousel-indicator");
+  const indicator = container.querySelector<HTMLDivElement>(
+    ".carousel-indicator"
+  );
 
   // 실제로 이동 가능한 스텝 수 계산
   const totalItems = originalItems.length;
@@ -178,11 +233,11 @@ function createIndicator(container) {
     const dot = document.createElement("div");
     dot.className = "dot";
     if (i === 0) dot.classList.add("active");
-    indicator.appendChild(dot);
+    indicator?.appendChild(dot);
   }
 }
 
-function moveCarousel(carouselId, direction) {
+function moveCarousel(carouselId: string, direction: number) {
   const carousel = carousels.get(carouselId);
   if (!carousel || carousel.isTransitioning) return;
 
@@ -246,8 +301,11 @@ function moveCarousel(carouselId, direction) {
 }
 
 // 애니메이션 후 원본 위치로 몰래 이동
-function snapToOriginalPosition(carousel) {
-  const track = carousel.container.querySelector(".carousel-track");
+function snapToOriginalPosition(carousel: Carousel) {
+  const track =
+    carousel.container.querySelector<HTMLDivElement>(".carousel-track");
+
+  if (!track) return;
 
   // 애니메이션 없이 원본 위치로 이동
   track.style.transition = "none";
@@ -263,8 +321,11 @@ function snapToOriginalPosition(carousel) {
   carousel.willSnapToOriginal = false;
 }
 
-function updateTrackPosition(carousel, animate = true) {
-  const track = carousel.container.querySelector(".carousel-track");
+function updateTrackPosition(carousel: Carousel, animate = true) {
+  const track =
+    carousel.container.querySelector<HTMLDivElement>(".carousel-track");
+
+  if (!track) return;
 
   if (!animate) {
     track.style.transition = "none";
@@ -280,17 +341,23 @@ function updateTrackPosition(carousel, animate = true) {
   track.style.transform = `translateX(-${moveDistance}px)`;
 }
 
-function updateCarouselButtons(carousel) {
-  const prevBtn = carousel.container.querySelector(".carousel-btn.prev");
-  const nextBtn = carousel.container.querySelector(".carousel-btn.next");
+function updateCarouselButtons(carousel: Carousel) {
+  const prevBtn =
+    carousel.container.querySelector<HTMLButtonElement>(".carousel-btn.prev");
+  const nextBtn =
+    carousel.container.querySelector<HTMLButtonElement>(".carousel-btn.next");
+
+  if (!prevBtn || !nextBtn) return;
 
   // 무한 캐러셀에서는 버튼을 항상 활성화
   prevBtn.disabled = false;
   nextBtn.disabled = false;
 }
 
-function updateIndicator(carousel) {
-  const indicator = carousel.container.querySelector(".carousel-indicator");
+function updateIndicator(carousel: Carousel) {
+  const indicator = carousel.container.querySelector<HTMLDivElement>(
+    ".carousel-indicator"
+  );
   if (!indicator) return;
 
   const dots = indicator.querySelectorAll(".dot");

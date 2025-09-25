@@ -5,14 +5,13 @@ import "./styles/hero.css";
 import "./styles/carousel.css";
 import "./styles/footer.css";
 
-// TypeScript 모듈들 import
-// import { initCarousel } from "./scripts/carousel.js";
-// import { initHeader } from "./scripts/header.js";
+import { initCarousel } from "./scripts/carousel.ts";
+import { initHeader } from "./scripts/header.ts";
 
 // 앱 전체 초기화
 function initApp(): void {
-  // initHeader();
-  // initCarousel();
+  initHeader();
+  initCarousel();
 }
 
 document.addEventListener("DOMContentLoaded", initApp);
