@@ -210,6 +210,19 @@ function setupCarousel(container: HTMLDivElement) {
   return id;
 }
 
+// 아이템들을 복제하여 Fragment로 반환하는 헬퍼 함수
+function createCloneFragment(items: HTMLDivElement[]): DocumentFragment {
+  const fragment = document.createDocumentFragment();
+
+  items.forEach((item) => {
+    const clone = item.cloneNode(true) as HTMLDivElement;
+    clone.classList.add("clone");
+    fragment.appendChild(clone);
+  });
+
+  return fragment;
+}
+
 // 무한 스크롤을 위한 복제 아이템 생성
 function createClonedItems(container: HTMLDivElement, itemsPerView: number) {
   const track = container.querySelector<HTMLDivElement>(".carousel-track");
@@ -217,27 +230,12 @@ function createClonedItems(container: HTMLDivElement, itemsPerView: number) {
     track?.querySelectorAll<HTMLDivElement>(".carousel-item") ?? []
   );
 
-  // 앞쪽에 추가할 복제본: 마지막 itemsPerView개를 순서 그대로
-  const frontClones = items.slice(-itemsPerView).map((item) => {
-    const clone = item.cloneNode(true) as HTMLDivElement;
-    clone.classList.add("clone");
-    return clone;
-  });
+  const frontItems = items.slice(-itemsPerView); // 마지막 itemsPerView개
+  const backItems = items.slice(0, itemsPerView); // 첫 번째 itemsPerView개
 
-  // 뒤쪽에 추가할 복제본: 첫 번째 itemsPerView개를 순서 그대로
-  const backClones = items.slice(0, itemsPerView).map((item) => {
-    const clone = item.cloneNode(true) as HTMLDivElement;
-    clone.classList.add("clone");
-    return clone;
-  });
-
-  // DocumentFragment를 사용해서 한 번에 DOM 조작
-  const frontFragment = document.createDocumentFragment();
-  const backFragment = document.createDocumentFragment();
-
-  // Fragment에 복제본들 추가
-  frontClones.forEach((clone) => frontFragment.appendChild(clone));
-  backClones.forEach((clone) => backFragment.appendChild(clone));
+  // Fragment 생성
+  const frontFragment = createCloneFragment(frontItems);
+  const backFragment = createCloneFragment(backItems);
 
   // 한 번에 DOM에 추가
   track?.insertBefore(frontFragment, track.firstChild);
