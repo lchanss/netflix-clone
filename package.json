@@ -9,7 +9,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "msw": "^2.11.3",
     "typescript": "~5.8.3",
     "vite": "^7.1.7"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
