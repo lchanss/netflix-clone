@@ -12,14 +12,14 @@
 
 ### 데이터 통신
 
-- [ ] 데이터 json으로 저장
-- [ ] 동적 렌더링할 데이터 `fetch`로 가져오기
-- [ ] `json-server` 활용하여 mockServer 연동
+- [x] 데이터 json으로 저장
+- [x] 동적 렌더링할 데이터 `fetch`로 가져오기
+- [x] `msw` 활용하여 mockServer 연동
 
 ### 개발 환경 구축
 
-- [ ] vite 환경 구성
-- [ ] typscript 마이그레이션
+- [x] vite 환경 구성
+- [x] typscript 마이그레이션
 
 ### 모달
 
