@@ -119,32 +119,38 @@ async function renderCarousels(containerId = "catalog") {
   }
 }
 
+function handleCarouselButtonClick(carouselId: string) {
+  return ({ currentTarget }: Event) => {
+    const direction = parseInt(
+      (currentTarget as HTMLButtonElement).dataset.direction || "0"
+    );
+    moveCarousel(carouselId, direction);
+  };
+}
+
+function setupCarouselButtons(container: HTMLDivElement, carouselId: string) {
+  const buttons =
+    container.querySelectorAll<HTMLButtonElement>(".carousel-btn");
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", handleCarouselButtonClick(carouselId));
+  });
+}
+
+function initCarouselContainer(container: HTMLDivElement) {
+  const carouselId = setupCarousel(container);
+  createIndicator(container);
+  setupCarouselButtons(container, carouselId);
+}
+
 async function initCarousel() {
   try {
     // 먼저 캐러셀들 렌더링
     await renderCarousels();
-
-    // 렌더링된 캐러셀들 초기화
-    document
-      .querySelectorAll<HTMLDivElement>(".carousel-container")
-      .forEach((container) => {
-        const carouselId = setupCarousel(container);
-
-        // 인디케이터 생성
-        createIndicator(container);
-
-        container
-          .querySelectorAll<HTMLButtonElement>(".carousel-btn")
-          .forEach((button) => {
-            button.addEventListener("click", (e) => {
-              const currentTarget = e.currentTarget as HTMLButtonElement;
-              const direction = parseInt(
-                currentTarget.dataset.direction || "0"
-              );
-              moveCarousel(carouselId, direction);
-            });
-          });
-      });
+    const containers = document.querySelectorAll<HTMLDivElement>(
+      ".carousel-container"
+    );
+    containers.forEach(initCarouselContainer);
   } catch (error) {
     console.error("캐러셀 초기화 실패:", error);
   }
