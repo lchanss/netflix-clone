@@ -33,8 +33,8 @@
 - 무한 캐러셀
   - [ ] 맨 처음에는 이전버튼 비활성화
 - 리팩토링
-  - [ ] 복제본 front/back 공통 로직 분리하여 함수화
-  - [ ] `snapToOriginalPosition`과 `updateTrackPosition` 공통 로직 분리하여 함수화
+  - [x] 복제본 front/back 공통 로직 분리하여 함수화
+  - [x] `snapToOriginalPosition`과 `updateTrackPosition` 공통 로직 분리하여 함수화
 - 고도화
   - [ ] 만능 캐러셀로 일반화
 

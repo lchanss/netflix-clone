@@ -343,22 +343,32 @@ function moveCarousel(carouselId: string, direction: number) {
   updateIndicator(carousel);
 }
 
+// track의 위치와 애니메이션을 설정하는 공통 함수
+function setTrackPosition(
+  track: HTMLDivElement,
+  currentIndex: number,
+  animate: boolean = true
+) {
+  const itemWidth = 258; // px
+  const gap = 8; // px
+  const moveDistance = currentIndex * (itemWidth + gap);
+
+  // 애니메이션 설정
+  track.style.transition = animate ? "transform 0.4s ease-in-out" : "none";
+
+  // 위치 설정
+  track.style.transform = `translateX(-${moveDistance}px)`;
+}
+
 // 애니메이션 후 원본 위치로 몰래 이동
 function snapToOriginalPosition(carousel: Carousel) {
   const track =
     carousel.container.querySelector<HTMLDivElement>(".carousel-track");
-
   if (!track) return;
 
-  // 애니메이션 없이 원본 위치로 이동
-  track.style.transition = "none";
+  // 원본 위치 계산 후 애니메이션 없이 이동
   carousel.currentIndex = carousel.itemsPerView + carousel.realCurrentIndex;
-
-  const itemWidth = 258; // px
-  const gap = 8; // px
-  const moveDistance = carousel.currentIndex * (itemWidth + gap);
-
-  track.style.transform = `translateX(-${moveDistance}px)`;
+  setTrackPosition(track, carousel.currentIndex, false);
 
   carousel.willSnapToOriginal = false;
 }
@@ -366,20 +376,9 @@ function snapToOriginalPosition(carousel: Carousel) {
 function updateTrackPosition(carousel: Carousel, animate = true) {
   const track =
     carousel.container.querySelector<HTMLDivElement>(".carousel-track");
-
   if (!track) return;
 
-  if (!animate) {
-    track.style.transition = "none";
-  } else {
-    track.style.transition = "transform 0.4s ease-in-out";
-  }
-
-  const itemWidth = 258; // px
-  const gap = 8; // px
-  const moveDistance = carousel.currentIndex * (itemWidth + gap);
-
-  track.style.transform = `translateX(-${moveDistance}px)`;
+  setTrackPosition(track, carousel.currentIndex, animate);
 }
 
 function updateCarouselButtons(carousel: Carousel) {
