@@ -381,6 +381,11 @@ function updateTrackPosition(carousel: Carousel, animate = true) {
   setTrackPosition(track, carousel.currentIndex, animate);
 }
 
+// 버튼 활성화 함수
+function enableButton(button: HTMLButtonElement) {
+  button.disabled = false;
+}
+
 function updateCarouselButtons(carousel: Carousel) {
   const prevBtn =
     carousel.container.querySelector<HTMLButtonElement>(".carousel-btn.prev");
@@ -390,8 +395,8 @@ function updateCarouselButtons(carousel: Carousel) {
   if (!prevBtn || !nextBtn) return;
 
   // 무한 캐러셀에서는 버튼을 항상 활성화
-  prevBtn.disabled = false;
-  nextBtn.disabled = false;
+  enableButton(prevBtn);
+  enableButton(nextBtn);
 }
 
 function updateIndicator(carousel: Carousel) {
