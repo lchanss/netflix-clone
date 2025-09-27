@@ -1,7 +1,22 @@
-import { carouselsData } from "../data.ts";
 import type { Carousel, CarouselData } from "../types.ts";
 
 const carousels = new Map<string, Carousel>();
+
+async function fetchCarouselsData(): Promise<Record<string, CarouselData>> {
+  try {
+    const response = await fetch("/api/carousels");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("캐러셀 데이터 fetch 실패:", error);
+    return {};
+  }
+}
 
 function createCarouselItem(imageUrl: string, index: number) {
   return `
@@ -72,43 +87,67 @@ function createCarouselHTML(carouselId: string, data: CarouselData) {
 }
 
 // 모든 캐러셀 렌더링
-function renderCarousels(containerId = "catalog") {
+async function renderCarousels(containerId = "catalog") {
   const container = document.querySelector(`.${containerId}`);
   if (!container) {
     console.error(`Container with class '${containerId}' not found`);
     return;
   }
 
-  const carouselsHTML = Object.entries(carouselsData)
-    .map(([carouselId, data]) => createCarouselHTML(carouselId, data))
-    .join("");
+  container.innerHTML = '<div class="loading">데이터를 불러오는 중...</div>';
 
-  container.innerHTML = carouselsHTML;
+  try {
+    const carouselsData = await fetchCarouselsData();
+
+    // 데이터가 비어있는지 확인
+    if (Object.keys(carouselsData).length === 0) {
+      container.innerHTML =
+        '<div class="error">데이터를 불러올 수 없습니다.</div>';
+      return;
+    }
+
+    // 캐러셀 HTML 생성
+    const carouselsHTML = Object.entries(carouselsData)
+      .map(([carouselId, data]) => createCarouselHTML(carouselId, data))
+      .join("");
+
+    container.innerHTML = carouselsHTML;
+  } catch (error) {
+    console.error("캐러셀 렌더링 실패:", error);
+    container.innerHTML =
+      '<div class="error">캐러셀을 표시할 수 없습니다.</div>';
+  }
 }
 
-function initCarousel() {
-  // 먼저 캐러셀들 렌더링
-  renderCarousels();
+async function initCarousel() {
+  try {
+    // 먼저 캐러셀들 렌더링
+    await renderCarousels();
 
-  // 렌더링된 캐러셀들 초기화
-  document
-    .querySelectorAll<HTMLDivElement>(".carousel-container")
-    .forEach((container) => {
-      const carouselId = setupCarousel(container);
+    // 렌더링된 캐러셀들 초기화
+    document
+      .querySelectorAll<HTMLDivElement>(".carousel-container")
+      .forEach((container) => {
+        const carouselId = setupCarousel(container);
 
-      // 인디케이터 생성
-      createIndicator(container);
+        // 인디케이터 생성
+        createIndicator(container);
 
-      container
-        .querySelectorAll<HTMLButtonElement>(".carousel-btn")
-        .forEach((button) => {
-          button.addEventListener("click", (e) => {
-            const currentTarget = e.currentTarget as HTMLButtonElement;
-            const direction = parseInt(currentTarget.dataset.direction || "0");
-            moveCarousel(carouselId, direction);
+        container
+          .querySelectorAll<HTMLButtonElement>(".carousel-btn")
+          .forEach((button) => {
+            button.addEventListener("click", (e) => {
+              const currentTarget = e.currentTarget as HTMLButtonElement;
+              const direction = parseInt(
+                currentTarget.dataset.direction || "0"
+              );
+              moveCarousel(carouselId, direction);
+            });
           });
-        });
-    });
+      });
+  } catch (error) {
+    console.error("캐러셀 초기화 실패:", error);
+  }
 }
 
 const ITEMES_PREVIEW_DEFAULT = 6;
@@ -294,7 +333,7 @@ function moveCarousel(carouselId: string, direction: number) {
       snapToOriginalPosition(carousel);
     }
     carousel.isTransitioning = false;
-  }, 400); // CSS transition 시간과 맞춤
+  }, 400);
 
   updateCarouselButtons(carousel);
   updateIndicator(carousel);
@@ -311,7 +350,6 @@ function snapToOriginalPosition(carousel: Carousel) {
   track.style.transition = "none";
   carousel.currentIndex = carousel.itemsPerView + carousel.realCurrentIndex;
 
-  // 픽셀 기반 정확한 계산
   const itemWidth = 258; // px
   const gap = 8; // px
   const moveDistance = carousel.currentIndex * (itemWidth + gap);
@@ -333,7 +371,6 @@ function updateTrackPosition(carousel: Carousel, animate = true) {
     track.style.transition = "transform 0.4s ease-in-out";
   }
 
-  // 픽셀 기반 정확한 계산
   const itemWidth = 258; // px
   const gap = 8; // px
   const moveDistance = carousel.currentIndex * (itemWidth + gap);
