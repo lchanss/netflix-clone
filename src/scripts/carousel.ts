@@ -18,10 +18,29 @@ async function fetchCarouselsData(): Promise<Record<string, CarouselData>> {
   }
 }
 
+function createMoviePopup(title: string, imageUrl: string) {
+  return `
+    <div class="movie-detail-popup">
+      <div class="popup-image">
+        <img src="${imageUrl}" alt="영화 포스터" />
+      </div>
+      <div class="popup-info">
+        <h3 class="movie-title">${title}</h3>
+        <div class="popup-controls">
+          <button class="like-btn">
+            <img src="/icons/thumb_up_icon.svg" alt="좋아요" width="20" height="20" />
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function createCarouselItem(imageUrl: string, index: number) {
   return `
     <div class="carousel-item">
       <img src="${imageUrl}" alt="영화썸네일 ${index + 1}" width="100%" />
+      ${createMoviePopup(`영화 제목 ${index + 1}`, "/images/placeholder.png")}
     </div>
   `;
 }

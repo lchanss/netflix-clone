@@ -18,7 +18,7 @@
 }
 
 .carousel-wrapper {
-  overflow: hidden;
+  /* overflow: hidden; */
   padding-left: 60px;
 }
 
@@ -32,9 +32,10 @@
 .carousel-item {
   flex: 0 0 calc((100% - 20px) / 6); /* 6개씩 보이게 */
   min-width: 0;
+  position: relative;
 }
 
-.carousel-item img {
+.carousel-item > img {
   width: 100%;
   border-radius: 4px;
   cursor: pointer;
@@ -43,7 +44,99 @@
 }
 
 .carousel-item img:hover {
-  transform: scale(1.05);
+  /* transform: scale(1.05); */
+}
+
+.carousel-item .movie-detail-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 340px;
+  height: 360px;
+  background-color: black;
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+  z-index: 500;
+  pointer-events: none; /* 기본적으로 클릭 방지 */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+}
+
+.carousel-item:hover .movie-detail-popup {
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto; /* 호버 시 클릭 가능 */
+}
+
+.popup-image {
+  width: 100%;
+  height: 50%;
+}
+
+.popup-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px 8px 0 0;
+}
+
+.popup-info {
+  width: 60%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: white;
+}
+
+.movie-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.popup-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.like-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.like-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: white;
+}
+
+.movie-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.rating {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.movie-description {
+  font-size: 14px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
 }
 
 /* 화살표 버튼 */
@@ -86,37 +179,6 @@
 
 .carousel-btn:disabled {
   display: none;
-}
-
-.carousel-item.ranked {
-  border-radius: 0 4px 4px 0;
-  display: flex;
-  position: relative;
-  align-items: center;
-
-  .rank {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 148px;
-    font-weight: 900;
-    color: var(--neutral-600);
-    position: absolute;
-    width: 110px;
-    top: -56px;
-    left: 16px;
-    text-shadow: -4px 0px var(--neutral-600), 0px 4px var(--neutral-600),
-      4px 0px var(--neutral-600), 0px -4px var(--neutral-600);
-    color: var(--black);
-  }
-
-  img {
-    position: relative;
-    z-index: 10;
-    margin-left: 110px;
-    width: 96px;
-    height: 100%;
-  }
 }
 
 /* 페이지 인디케이터 */
