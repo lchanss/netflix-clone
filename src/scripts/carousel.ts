@@ -18,18 +18,80 @@ async function fetchCarouselsData(): Promise<Record<string, CarouselData>> {
   }
 }
 
-function createMoviePopup(title: string, imageUrl: string) {
+// 로컬스토리지에서 좋아요 상태 관리
+function getLikedStatus(movieId: string): boolean {
+  const likedMovies = JSON.parse(localStorage.getItem("likedMovies") || "{}");
+  return likedMovies[movieId] || false;
+}
+
+function setLikedStatus(movieId: string, liked: boolean): void {
+  const likedMovies = JSON.parse(localStorage.getItem("likedMovies") || "{}");
+  likedMovies[movieId] = liked;
+  localStorage.setItem("likedMovies", JSON.stringify(likedMovies));
+}
+
+function toggleLike(movieId: string): boolean {
+  const currentStatus = getLikedStatus(movieId);
+  const newStatus = !currentStatus;
+  setLikedStatus(movieId, newStatus);
+  return newStatus;
+}
+
+// 좋아요 버튼 클릭 이벤트 핸들러
+function handleLikeButtonClick(event: Event) {
+  event.preventDefault();
+  event.stopPropagation();
+
+  const button = event.currentTarget as HTMLButtonElement;
+  const movieId = button.dataset.movieId;
+
+  if (!movieId) return;
+
+  const newLikedStatus = toggleLike(movieId);
+
+  // 아이콘 업데이트
+  const img = button.querySelector("img");
+  if (img) {
+    img.src = newLikedStatus
+      ? "/icons/thumb_up_filled_icon.svg"
+      : "/icons/thumb_up_icon.svg";
+  }
+}
+
+function setupLikeButtons(container: HTMLDivElement) {
+  const likeButtons =
+    container.querySelectorAll<HTMLButtonElement>(".like-btn");
+  likeButtons.forEach((button) => {
+    button.addEventListener("click", handleLikeButtonClick);
+  });
+}
+
+// 팝업 HTML 생성 함수
+function createMoviePopup(movieId: string, title: string, imageUrl: string) {
+  const isLiked = getLikedStatus(movieId);
+  const iconSrc = isLiked
+    ? "/icons/thumb_up_filled_icon.svg"
+    : "/icons/thumb_up_icon.svg";
+
   return `
     <div class="movie-detail-popup">
-      <div class="popup-image">
-        <img src="${imageUrl}" alt="영화 포스터" />
-      </div>
-      <div class="popup-info">
-        <h3 class="movie-title">${title}</h3>
-        <div class="popup-controls">
-          <button class="like-btn">
-            <img src="/icons/thumb_up_icon.svg" alt="좋아요" width="20" height="20" />
-          </button>
+      <div class="popup-content">
+        <div class="popup-image">
+          <img src="${imageUrl}" alt="영화 포스터" />
+        </div>
+        <div class="popup-info">
+          <h3 class="movie-title">${title}</h3>
+          <div class="popup-controls">
+            <button class="like-btn" data-movie-id="${movieId}">
+              <img src="${iconSrc}" alt="좋아요" width="20" height="20" />
+            </button>
+          </div>
+          <div class="movie-meta">
+            <span class="rating">15+</span>
+            <span class="genre">액션</span>
+            <span class="year">2024</span>
+          </div>
+          <p class="movie-description">영화에 대한 간단한 설명이 들어갑니다.</p>
         </div>
       </div>
     </div>
@@ -37,15 +99,21 @@ function createMoviePopup(title: string, imageUrl: string) {
 }
 
 function createCarouselItem(imageUrl: string, index: number) {
+  const movieId = `movie_${index + 1}`;
+
   return `
     <div class="carousel-item">
       <img src="${imageUrl}" alt="영화썸네일 ${index + 1}" width="100%" />
-      ${createMoviePopup(`영화 제목 ${index + 1}`, "/images/placeholder.png")}
+      ${createMoviePopup(
+        movieId,
+        `영화 제목 ${index + 1}`,
+        "/images/placeholder.png"
+      )} 
     </div>
   `;
 }
 
-function createCarouselButtons(): string {
+function createCarouselNavigateButtons(): string {
   return `
     <button class="carousel-btn prev" data-direction="-1">
       <img src="/icons/arrow_left_icon.svg" alt="이전" width="64px" />
@@ -73,7 +141,7 @@ function createCarouselContainer(
           ${carouselItemsHTML}
         </div>
       </div>
-      ${createCarouselButtons()}
+      ${createCarouselNavigateButtons()}
     </div>
   `;
 }
@@ -160,6 +228,7 @@ function initCarouselContainer(container: HTMLDivElement) {
   const carouselId = setupCarousel(container);
   createIndicator(container);
   setupCarouselButtons(container, carouselId);
+  setupLikeButtons(container);
 }
 
 async function initCarousel() {
