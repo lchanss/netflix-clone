@@ -43,10 +43,6 @@
   display: block;
 }
 
-.carousel-item img:hover {
-  /* transform: scale(1.05); */
-}
-
 .carousel-item .movie-detail-popup {
   position: absolute;
   top: 50%;
