@@ -1,6 +1,7 @@
 import type { Carousel, CarouselData } from "../types.ts";
 
 const carousels = new Map<string, Carousel>();
+let currentPopup: HTMLElement | null = null;
 
 async function fetchCarouselsData(): Promise<Record<string, CarouselData>> {
   try {
@@ -58,57 +59,125 @@ function handleLikeButtonClick(event: Event) {
   }
 }
 
-function setupLikeButtons(container: HTMLDivElement) {
-  const likeButtons =
-    container.querySelectorAll<HTMLButtonElement>(".like-btn");
-  likeButtons.forEach((button) => {
-    button.addEventListener("click", handleLikeButtonClick);
-  });
-}
-
 // 팝업 HTML 생성 함수
-function createMoviePopup(movieId: string, title: string, imageUrl: string) {
+function createMoviePopupHTML(
+  movieId: string,
+  title: string,
+  imageUrl: string
+): string {
   const isLiked = getLikedStatus(movieId);
   const iconSrc = isLiked
     ? "/icons/thumb_up_filled_icon.svg"
     : "/icons/thumb_up_icon.svg";
 
   return `
-    <div class="movie-detail-popup">
-      <div class="popup-content">
-        <div class="popup-image">
-          <img src="${imageUrl}" alt="영화 포스터" />
-        </div>
-        <div class="popup-info">
-          <h3 class="movie-title">${title}</h3>
-          <div class="popup-controls">
-            <button class="like-btn" data-movie-id="${movieId}">
-              <img src="${iconSrc}" alt="좋아요" width="20" height="20" />
-            </button>
+    <div class="movie-detail-popup-overlay" data-movie-id="${movieId}">
+      <div class="movie-detail-popup">
+        <div class="popup-content">
+          <div class="popup-image">
+            <img src="${imageUrl}" alt="영화 포스터" />
           </div>
-          <div class="movie-meta">
-            <span class="rating">15+</span>
-            <span class="genre">액션</span>
-            <span class="year">2024</span>
+          <div class="popup-info">
+            <h3 class="movie-title">${title}</h3>
+            <div class="popup-controls">
+              <button class="like-btn" data-movie-id="${movieId}">
+                <img src="${iconSrc}" alt="좋아요" width="20" height="20" />
+              </button>
+            </div>
           </div>
-          <p class="movie-description">영화에 대한 간단한 설명이 들어갑니다.</p>
         </div>
       </div>
     </div>
   `;
 }
 
-function createCarouselItem(imageUrl: string, index: number) {
-  const movieId = `movie_${index + 1}`;
+// 팝업 표시
+function showMoviePopup(
+  movieId: string,
+  title: string,
+  imageUrl: string,
+  carouselItem: HTMLElement
+) {
+  // 기존 팝업 제거
+  hideMoviePopup();
 
+  // 새 팝업 생성
+  const popupHTML = createMoviePopupHTML(movieId, title, imageUrl);
+  const popupElement = document.createElement("div");
+  popupElement.innerHTML = popupHTML;
+  currentPopup = popupElement.firstElementChild as HTMLElement;
+
+  // body에 추가
+  document.body.appendChild(currentPopup);
+
+  // 캐러셀 아이템 위치 계산
+  const rect = carouselItem.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  // 팝업 위치 설정
+  const popup = currentPopup.querySelector(
+    ".movie-detail-popup"
+  ) as HTMLElement;
+  popup.style.position = "fixed";
+  popup.style.left = `${centerX}px`;
+  popup.style.top = `${centerY}px`;
+  popup.style.transform = "translate(-50%, -50%) scale(0)";
+  popup.style.zIndex = "10000";
+
+  // 좋아요 버튼 이벤트 리스너 추가
+  const likeBtn = popup.querySelector(".like-btn") as HTMLButtonElement;
+  if (likeBtn) {
+    likeBtn.addEventListener("click", handleLikeButtonClick);
+  }
+
+  // 애니메이션으로 표시
+  requestAnimationFrame(() => {
+    popup.style.transform = "translate(-50%, -50%) scale(1)";
+  });
+}
+
+// 팝업 숨김
+function hideMoviePopup() {
+  if (currentPopup) {
+    currentPopup.remove();
+    currentPopup = null;
+  }
+}
+
+// 캐러셀 아이템 이벤트 설정
+function setupCarouselItemEvents(container: HTMLDivElement) {
+  const items = container.querySelectorAll<HTMLDivElement>(".carousel-item");
+
+  items.forEach((item, index) => {
+    const movieId = `movie_${index + 1}`;
+    const img = item.querySelector("img");
+    if (!img) return;
+
+    let hoverTimeout: number;
+
+    item.addEventListener("mouseenter", () => {
+      hoverTimeout = window.setTimeout(() => {
+        showMoviePopup(
+          movieId,
+          `영화 제목 ${index + 1}`,
+          "/images/placeholder.png",
+          item
+        );
+      }, 300); // 300ms 딜레이
+    });
+
+    item.addEventListener("mouseleave", () => {
+      clearTimeout(hoverTimeout);
+      hideMoviePopup();
+    });
+  });
+}
+
+function createCarouselItem(imageUrl: string, index: number) {
   return `
-    <div class="carousel-item">
+    <div class="carousel-item" data-movie-index="${index}">
       <img src="${imageUrl}" alt="영화썸네일 ${index + 1}" width="100%" />
-      ${createMoviePopup(
-        movieId,
-        `영화 제목 ${index + 1}`,
-        "/images/placeholder.png"
-      )} 
     </div>
   `;
 }
@@ -228,7 +297,7 @@ function initCarouselContainer(container: HTMLDivElement) {
   const carouselId = setupCarousel(container);
   createIndicator(container);
   setupCarouselButtons(container, carouselId);
-  setupLikeButtons(container);
+  setupCarouselItemEvents(container);
 }
 
 async function initCarousel() {
