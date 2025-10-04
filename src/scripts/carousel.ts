@@ -1,10 +1,24 @@
-import type { Carousel, CarouselData } from "../types.ts";
+import type { Carousel, CarouselData, CarouselItem } from "../types.ts";
 import { hideMoviePopup, showMoviePopup } from "./moviePopup.ts";
 
 const carousels = new Map<string, Carousel>();
 
 const ITEMES_PREVIEW_DEFAULT = 6;
 const STEP_SIZE_DEFAULT = 1;
+const NAVIGATE_BUTTON_CONFIGS = [
+  {
+    buttonClass: "prev",
+    direction: -1,
+    imgSrc: "/icons/arrow_left_icon.svg",
+    alt: "이전",
+  },
+  {
+    buttonClass: "next",
+    direction: 1,
+    imgSrc: "/icons/arrow_right_icon.svg",
+    alt: "다음",
+  },
+];
 
 // ===== Public API =====
 
@@ -167,14 +181,19 @@ function createCarouselHTML(carouselData: CarouselData) {
   const { id, title, itemsPerView, stepSize, items } = carouselData;
 
   const carouselItemsHTML = items
-    .map((imageUrl, index) => createCarouselItem(imageUrl, index))
+    .map((item) => createCarouselItem(item))
     .join("");
+
+  const carouselNavigateButtonsHTML = NAVIGATE_BUTTON_CONFIGS.map((config) =>
+    createCarouselNavigateButton(config)
+  ).join("");
 
   const carouselContainerHTML = createCarouselContainer(
     id,
     itemsPerView,
     stepSize,
-    carouselItemsHTML
+    carouselItemsHTML,
+    carouselNavigateButtonsHTML
   );
 
   return createCarouselSection(title, carouselContainerHTML);
@@ -193,7 +212,8 @@ function createCarouselContainer(
   carouselId: number,
   itemsPerView: number,
   stepSize: number,
-  carouselItemsHTML: string
+  carouselItemsHTML: string,
+  carouselNavigateButtonsHTML: string
 ) {
   return `
     <div class="carousel-container" 
@@ -206,28 +226,34 @@ function createCarouselContainer(
           ${carouselItemsHTML}
         </div>
       </div>
-      ${createCarouselNavigateButtons()}
+      ${carouselNavigateButtonsHTML}
     </div>
   `;
 }
 
-function createCarouselItem(imageUrl: string, index: number) {
+// TODO: data-movie-index 말고 id로 바꾸기
+function createCarouselItem(item: CarouselItem) {
+  const { id, imageUrl } = item;
+
   return `
-    <div class="carousel-item" data-movie-index="${index}">
-      <img src="${imageUrl}" alt="영화썸네일 ${index + 1}" width="100%" />
+    <div class="carousel-item" data-movie-index="${id}">
+      <img src="${imageUrl}" alt="영화썸네일 ${id}" width="100%" />
     </div>
   `;
 }
 
-function createCarouselNavigateButtons(): string {
+function createCarouselNavigateButton(config: {
+  buttonClass: string;
+  direction: number;
+  imgSrc: string;
+  alt: string;
+}): string {
+  const { buttonClass, direction, imgSrc, alt } = config;
+
   return `
-    <button class="carousel-btn prev" data-direction="-1">
-      <img src="/icons/arrow_left_icon.svg" alt="이전" width="64px" />
-    </button>
-    <button class="carousel-btn next" data-direction="1">
-      <img src="/icons/arrow_right_icon.svg" alt="다음" width="64px" />
-    </button>
-  `;
+    <button class="${buttonClass}" data-direction="${direction}">
+      <img src="${imgSrc}" alt="${alt}" width="64px" />
+    </button>`;
 }
 
 // ===== Event Handlers =====

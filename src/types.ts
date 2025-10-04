@@ -1,12 +1,12 @@
-export interface CarouselData {
+export type CarouselData = {
   id: number;
   title: string;
   itemsPerView: number;
   stepSize: number;
-  items: string[];
-}
+  items: CarouselItem[];
+};
 
-export interface Carousel {
+export type Carousel = {
   currentIndex: number;
   realCurrentIndex: number;
   itemsPerView: number;
@@ -15,6 +15,9 @@ export interface Carousel {
   totalOriginalItems: number;
   isTransitioning: boolean;
   willSnapToOriginal?: boolean;
-}
+};
 
-// TODO: Movie 타입 정의
+export type CarouselItem = {
+  id: number;
+  imageUrl: string;
+};

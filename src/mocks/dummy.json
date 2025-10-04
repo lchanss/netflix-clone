@@ -5,16 +5,16 @@
     "itemsPerView": 6,
     "stepSize": 3,
     "items": [
-      "/images/movie_thumbnail1.webp",
-      "/images/movie_thumbnail2.webp",
-      "/images/movie_thumbnail3.webp",
-      "/images/movie_thumbnail4.webp",
-      "/images/movie_thumbnail5.webp",
-      "/images/movie_thumbnail6.webp",
-      "/images/movie_thumbnail7.webp",
-      "/images/movie_thumbnail8.webp",
-      "/images/movie_thumbnail9.webp",
-      "/images/movie_thumbnail10.webp"
+      { "id": 1, "imageUrl": "/images/movie_thumbnail1.webp" },
+      { "id": 2, "imageUrl": "/images/movie_thumbnail2.webp" },
+      { "id": 3, "imageUrl": "/images/movie_thumbnail3.webp" },
+      { "id": 4, "imageUrl": "/images/movie_thumbnail4.webp" },
+      { "id": 5, "imageUrl": "/images/movie_thumbnail5.webp" },
+      { "id": 6, "imageUrl": "/images/movie_thumbnail6.webp" },
+      { "id": 7, "imageUrl": "/images/movie_thumbnail7.webp" },
+      { "id": 8, "imageUrl": "/images/movie_thumbnail8.webp" },
+      { "id": 9, "imageUrl": "/images/movie_thumbnail9.webp" },
+      { "id": 10, "imageUrl": "/images/movie_thumbnail10.webp" }
     ]
   },
   {
@@ -23,13 +23,13 @@
     "itemsPerView": 6,
     "stepSize": 6,
     "items": [
-      "/images/movie_thumbnail4.webp",
-      "/images/movie_thumbnail5.webp",
-      "/images/movie_thumbnail6.webp",
-      "/images/movie_thumbnail7.webp",
-      "/images/movie_thumbnail8.webp",
-      "/images/movie_thumbnail9.webp",
-      "/images/movie_thumbnail10.webp"
+      { "id": 4, "imageUrl": "/images/movie_thumbnail4.webp" },
+      { "id": 5, "imageUrl": "/images/movie_thumbnail5.webp" },
+      { "id": 6, "imageUrl": "/images/movie_thumbnail6.webp" },
+      { "id": 7, "imageUrl": "/images/movie_thumbnail7.webp" },
+      { "id": 8, "imageUrl": "/images/movie_thumbnail8.webp" },
+      { "id": 9, "imageUrl": "/images/movie_thumbnail9.webp" },
+      { "id": 10, "imageUrl": "/images/movie_thumbnail10.webp" }
     ]
   },
   {
@@ -38,16 +38,16 @@
     "itemsPerView": 6,
     "stepSize": 5,
     "items": [
-      "/images/movie_thumbnail6.webp",
-      "/images/movie_thumbnail7.webp",
-      "/images/movie_thumbnail8.webp",
-      "/images/movie_thumbnail9.webp",
-      "/images/movie_thumbnail10.webp",
-      "/images/movie_thumbnail1.webp",
-      "/images/movie_thumbnail2.webp",
-      "/images/movie_thumbnail3.webp",
-      "/images/movie_thumbnail4.webp",
-      "/images/movie_thumbnail5.webp"
+      { "id": 6, "imageUrl": "/images/movie_thumbnail6.webp" },
+      { "id": 7, "imageUrl": "/images/movie_thumbnail7.webp" },
+      { "id": 8, "imageUrl": "/images/movie_thumbnail8.webp" },
+      { "id": 9, "imageUrl": "/images/movie_thumbnail9.webp" },
+      { "id": 10, "imageUrl": "/images/movie_thumbnail10.webp" },
+      { "id": 1, "imageUrl": "/images/movie_thumbnail1.webp" },
+      { "id": 2, "imageUrl": "/images/movie_thumbnail2.webp" },
+      { "id": 3, "imageUrl": "/images/movie_thumbnail3.webp" },
+      { "id": 4, "imageUrl": "/images/movie_thumbnail4.webp" },
+      { "id": 5, "imageUrl": "/images/movie_thumbnail5.webp" }
     ]
   }
 ]
