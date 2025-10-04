@@ -3,8 +3,10 @@ import { hideMoviePopup, showMoviePopup } from "./moviePopup.ts";
 
 const carousels = new Map<string, Carousel>();
 
-const ITEMES_PREVIEW_DEFAULT = 6;
+const ITEMS_PREVIEW_DEFAULT = 6;
 const STEP_SIZE_DEFAULT = 1;
+const ITEM_WIDTH = 258; // px
+const ITEM_GAP = 8; // px
 const NAVIGATE_BUTTON_CONFIGS = [
   {
     buttonClass: "prev",
@@ -57,7 +59,7 @@ async function renderCarousels() {
       return;
     }
 
-    // 캐러셀 HTML 생성
+    // 캐러셀들 HTML 생성
     const carouselsHTML = carouselsData
       .map((data) => createCarouselHTML(data))
       .join("");
@@ -77,54 +79,71 @@ function initCarouselContainer(container: HTMLDivElement) {
 }
 
 function setupCarousel(container: HTMLDivElement) {
-  const id = container.dataset.carousel || Math.random().toString(36);
+  const { id, itemsPerView, stepSize } = getCarouselConfig(container);
 
-  // HTML에서 설정값 읽기 (기본값 설정)
-  const itemsPerView = parseInt(
-    container.dataset.itemsPerView ?? ITEMES_PREVIEW_DEFAULT.toString()
-  );
-  let stepSize = parseInt(
-    container.dataset.stepSize ?? STEP_SIZE_DEFAULT.toString()
-  );
+  const track = getCarouselTrack(container);
+  if (!track) return id;
 
-  // 검증: stepSize가 itemsPerView보다 클 수 없음
-  if (stepSize > itemsPerView) {
-    console.warn(
-      `stepSize(${stepSize})가 itemsPerView(${itemsPerView})보다 클 수 없습니다. stepSize를 ${itemsPerView}로 조정합니다.`
-    );
-    stepSize = itemsPerView;
-  }
+  const items = getCarouselItems(track);
+  createClonedItems(track, items, itemsPerView);
 
-  // 무한 캐러셀을 위한 복제 아이템 생성
-  createClonedItems(container, itemsPerView);
-
-  const track = container.querySelector<HTMLDivElement>(".carousel-track");
-  const totalOriginalItems =
-    track?.querySelectorAll<HTMLDivElement>(".carousel-item:not(.clone)")
-      .length ?? 0;
-
-  carousels.set(id, {
-    currentIndex: 0,
+  const carousel = {
+    currentIndex: itemsPerView, // 현재 트랙 위치 인덱스 (복제본 고려)
     realCurrentIndex: 0, // 실제 원본 아이템의 인덱스
     itemsPerView: itemsPerView,
     stepSize: stepSize,
     container: container,
-    totalOriginalItems: totalOriginalItems,
+    totalOriginalItems: items.length,
     isTransitioning: false,
-  });
+  };
 
-  // 초기 위치 설정 (원본 배열 첫 번째 아이템으로 이동)
-  const carousel = carousels.get(id);
-
-  if (!carousel) {
-    throw new Error("캐러셀 초기화 실패");
-  }
-
-  carousel.currentIndex = itemsPerView;
-  updateTrackPosition(carousel, false); // 애니메이션 없이 초기 위치 설정
-  updateCarouselButtons(carousel);
+  setTrackPosition(track, carousel.currentIndex, false);
+  carousels.set(id, carousel);
 
   return id;
+}
+
+// HTML에서 설정값 읽기 (기본값 설정)
+function getCarouselConfig(container: HTMLDivElement) {
+  const id = container.dataset.carousel || Math.random().toString(36);
+  const itemsPerView = parseInt(
+    container.dataset.itemsPerView ?? ITEMS_PREVIEW_DEFAULT.toString()
+  );
+  const stepSize = parseInt(
+    container.dataset.stepSize ?? STEP_SIZE_DEFAULT.toString()
+  );
+
+  return {
+    id,
+    itemsPerView,
+    stepSize: validateStepSize(stepSize, itemsPerView),
+  };
+}
+
+function validateStepSize(stepSize: number, itemsPerView: number) {
+  if (stepSize > itemsPerView) {
+    console.warn(
+      `stepSize(${stepSize})가 itemsPerView(${itemsPerView})보다 클 수 없습니다. ` +
+        `stepSize를 ${itemsPerView}로 조정합니다.`
+    );
+    return itemsPerView;
+  }
+  return stepSize;
+}
+
+function getCarouselTrack(container: HTMLDivElement) {
+  const track = container.querySelector<HTMLDivElement>(".carousel-track");
+
+  if (!track) {
+    console.error("캐러셀 트랙을 찾을 수 없습니다.");
+    return null;
+  }
+
+  return track;
+}
+
+function getCarouselItems(track: HTMLDivElement): HTMLDivElement[] {
+  return Array.from(track.querySelectorAll<HTMLDivElement>(".carousel-item"));
 }
 
 function createIndicator(container: HTMLDivElement) {
@@ -362,12 +381,11 @@ function moveCarousel(carouselId: string, direction: number) {
 // ===== DOM Utilities =====
 
 // 무한 스크롤을 위한 복제 아이템 생성
-function createClonedItems(container: HTMLDivElement, itemsPerView: number) {
-  const track = container.querySelector<HTMLDivElement>(".carousel-track");
-  const items = Array.from(
-    track?.querySelectorAll<HTMLDivElement>(".carousel-item") ?? []
-  );
-
+function createClonedItems(
+  track: HTMLDivElement,
+  items: HTMLDivElement[],
+  itemsPerView: number
+) {
   const frontItems = items.slice(-itemsPerView); // 마지막 itemsPerView개
   const backItems = items.slice(0, itemsPerView); // 첫 번째 itemsPerView개
 
@@ -376,8 +394,8 @@ function createClonedItems(container: HTMLDivElement, itemsPerView: number) {
   const backFragment = createCloneFragment(backItems);
 
   // 한 번에 DOM에 추가
-  track?.insertBefore(frontFragment, track.firstChild);
-  track?.appendChild(backFragment);
+  track.insertBefore(frontFragment, track.firstChild);
+  track.appendChild(backFragment);
 }
 
 // 아이템들을 복제하여 Fragment로 반환하는 헬퍼 함수
@@ -401,14 +419,9 @@ function setTrackPosition(
   currentIndex: number,
   animate: boolean = true
 ) {
-  const itemWidth = 258; // px
-  const gap = 8; // px
-  const moveDistance = currentIndex * (itemWidth + gap);
+  const moveDistance = currentIndex * (ITEM_WIDTH + ITEM_GAP);
 
-  // 애니메이션 설정
   track.style.transition = animate ? "transform 0.4s ease-in-out" : "none";
-
-  // 위치 설정
   track.style.transform = `translateX(-${moveDistance}px)`;
 }
 
