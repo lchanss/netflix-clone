@@ -7,6 +7,7 @@ const ITEMS_PREVIEW_DEFAULT = 6;
 const STEP_SIZE_DEFAULT = 1;
 const ITEM_WIDTH = 258; // px
 const ITEM_GAP = 8; // px
+const ANIMATION_DURATION = 400; // ms
 const NAVIGATE_BUTTON_CONFIGS = [
   {
     buttonClass: "prev",
@@ -275,7 +276,7 @@ function createCarouselNavigateButton(config: {
   const { buttonClass, direction, imgSrc, alt } = config;
 
   return `
-    <button class="${buttonClass}" data-direction="${direction}">
+    <button class="carousel-btn ${buttonClass}" data-direction="${direction}">
       <img src="${imgSrc}" alt="${alt}" width="64px" />
     </button>`;
 }
@@ -326,27 +327,28 @@ function moveCarousel(carouselId: string, direction: number) {
 
   carousel.isTransitioning = true;
 
-  const totalItems = carousel.originalItemsCount;
-  const maxIndex = Math.max(0, totalItems - carousel.itemsPerView);
+  const { originalItemsCount, stepSize, itemsPerView, realCurrentIndex } =
+    carousel;
+
+  const maxIndex = Math.max(0, originalItemsCount - itemsPerView);
 
   // 무한 루프 체크: 경계에 도달했는데 더 이동하려고 하는 경우
-  const isAtEnd = carousel.realCurrentIndex === maxIndex && direction > 0;
-  const isAtStart = carousel.realCurrentIndex === 0 && direction < 0;
+  const isAtEnd = realCurrentIndex === maxIndex && direction > 0;
+  const isAtStart = realCurrentIndex === 0 && direction < 0;
 
   if (isAtEnd) {
     // 끝에서 다음 버튼 클릭 시 복제본으로 자연스럽게 이동 (itemsPerView만큼)
-    carousel.currentIndex += carousel.itemsPerView; // 복제본 영역으로 itemsPerView만큼 이동
+    carousel.currentIndex += itemsPerView; // 복제본 영역으로 itemsPerView만큼 이동
     carousel.realCurrentIndex = 0; // 실제로는 처음을 가리킴
     carousel.willSnapToOriginal = true; // 애니메이션 후 원본으로 이동 플래그
   } else if (isAtStart) {
     // 시작에서 이전 버튼 클릭 시 복제본으로 자연스럽게 이동 (itemsPerView만큼)
-    carousel.currentIndex -= carousel.itemsPerView; // 앞쪽 복제본 영역으로 itemsPerView만큼 이동
+    carousel.currentIndex -= itemsPerView; // 앞쪽 복제본 영역으로 itemsPerView만큼 이동
     carousel.realCurrentIndex = maxIndex; // 실제로는 끝을 가리킴
     carousel.willSnapToOriginal = true; // 애니메이션 후 원본으로 이동 플래그
   } else {
     // 일반적인 이동: stepSize만큼, 경계 내에서만
-    let newRealIndex =
-      carousel.realCurrentIndex + direction * carousel.stepSize;
+    let newRealIndex = realCurrentIndex + direction * stepSize;
 
     // 경계 체크 및 조정
     if (direction > 0) {
@@ -362,7 +364,7 @@ function moveCarousel(carouselId: string, direction: number) {
     }
 
     // 실제 이동 거리 계산
-    const actualStep = newRealIndex - carousel.realCurrentIndex;
+    const actualStep = newRealIndex - realCurrentIndex;
 
     carousel.currentIndex += actualStep;
     carousel.realCurrentIndex = newRealIndex;
@@ -377,7 +379,7 @@ function moveCarousel(carouselId: string, direction: number) {
       snapToOriginalPosition(carousel);
     }
     carousel.isTransitioning = false;
-  }, 400);
+  }, ANIMATION_DURATION);
 
   updateCarouselButtons(carousel);
   updateIndicator(carousel);
@@ -472,35 +474,35 @@ function updateIndicator(carousel: Carousel) {
   );
   if (!indicator) return;
 
+  const { originalItemsCount, itemsPerView, realCurrentIndex, stepSize } =
+    carousel;
+
+  const currentPage = calculateActiveIndicatorIndex(
+    originalItemsCount,
+    itemsPerView,
+    realCurrentIndex,
+    stepSize
+  );
+
   const dots = indicator.querySelectorAll(".dot");
-  const totalItems = carousel.originalItemsCount;
-  const maxIndex = Math.max(0, totalItems - carousel.itemsPerView);
-
-  let possiblePositions = [];
-  for (let i = 0; i <= maxIndex; i += carousel.stepSize) {
-    possiblePositions.push(i);
-  }
-
-  if (possiblePositions[possiblePositions.length - 1] < maxIndex) {
-    possiblePositions.push(maxIndex);
-  }
-
-  // 현재 실제 인덱스를 기준으로 페이지 계산
-  let adjustedIndex = carousel.realCurrentIndex;
-
-  // stepSize 단위로 정렬된 인덱스 찾기
-  let currentPage = 0;
-  for (let i = 0; i < possiblePositions.length; i++) {
-    if (adjustedIndex >= possiblePositions[i]) {
-      currentPage = i;
-    } else {
-      break;
-    }
-  }
-
   dots.forEach((dot, index) => {
     dot.classList.toggle("active", index === currentPage);
   });
+}
+
+function calculateActiveIndicatorIndex(
+  originalItemsCount: number,
+  itemsPerView: number,
+  realCurrentIndex: number,
+  stepSize: number
+): number {
+  const maxIndex = Math.max(0, originalItemsCount - itemsPerView);
+
+  if (realCurrentIndex >= maxIndex) {
+    return Math.ceil(maxIndex / stepSize);
+  }
+
+  return Math.floor(realCurrentIndex / stepSize);
 }
 
 // 버튼 활성화 함수
