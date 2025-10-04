@@ -1,5 +1,5 @@
 export type CarouselData = {
-  id: number;
+  id: string;
   title: string;
   itemsPerView: number;
   stepSize: number;
@@ -12,7 +12,7 @@ export type Carousel = {
   itemsPerView: number;
   stepSize: number;
   container: HTMLElement;
-  totalOriginalItems: number;
+  originalItemsCount: number;
   isTransitioning: boolean;
   willSnapToOriginal?: boolean;
 };

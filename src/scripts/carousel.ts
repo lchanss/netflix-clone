@@ -87,13 +87,13 @@ function setupCarousel(container: HTMLDivElement) {
   const items = getCarouselItems(track);
   createClonedItems(track, items, itemsPerView);
 
-  const carousel = {
+  const carousel: Carousel = {
     currentIndex: itemsPerView, // 현재 트랙 위치 인덱스 (복제본 고려)
     realCurrentIndex: 0, // 실제 원본 아이템의 인덱스
     itemsPerView: itemsPerView,
     stepSize: stepSize,
     container: container,
-    totalOriginalItems: items.length,
+    originalItemsCount: items.length,
     isTransitioning: false,
   };
 
@@ -151,37 +151,42 @@ function createIndicator(container: HTMLDivElement) {
   const carousel = carousels.get(carouselId);
   if (!carousel) return;
 
-  const originalItems = container.querySelectorAll<HTMLDivElement>(
-    ".carousel-item:not(.clone)"
-  );
   const indicator = container.querySelector<HTMLDivElement>(
     ".carousel-indicator"
   );
+  if (!indicator) return;
 
-  // 실제로 이동 가능한 스텝 수 계산
-  const totalItems = originalItems.length;
-  const maxIndex = Math.max(0, totalItems - carousel.itemsPerView);
+  const { originalItemsCount, stepSize, itemsPerView } = carousel;
+  const indicatorCount = calculateIndicatorCount(
+    originalItemsCount,
+    itemsPerView,
+    stepSize
+  );
 
-  // 가능한 모든 위치를 stepSize 단위로 나누어 계산
-  let possiblePositions = [];
-  for (let i = 0; i <= maxIndex; i += carousel.stepSize) {
-    possiblePositions.push(i);
-  }
+  const dotsFragment = createDots(indicatorCount);
+  indicator.appendChild(dotsFragment);
+}
 
-  // 마지막 위치가 maxIndex에 도달하지 못했다면 추가
-  if (possiblePositions[possiblePositions.length - 1] < maxIndex) {
-    possiblePositions.push(maxIndex);
-  }
+function calculateIndicatorCount(
+  originalItemsCount: number,
+  itemsPerView: number,
+  stepSize: number
+) {
+  const maxIndex = Math.max(0, originalItemsCount - itemsPerView);
+  return Math.ceil(maxIndex / stepSize) + 1;
+}
 
-  const indicatorCount = possiblePositions.length;
+function createDots(count: number) {
+  const fragment = document.createDocumentFragment();
 
-  // 점들 생성
-  for (let i = 0; i < indicatorCount; i++) {
+  for (let i = 0; i < count; i++) {
     const dot = document.createElement("div");
     dot.className = "dot";
     if (i === 0) dot.classList.add("active");
-    indicator?.appendChild(dot);
+    fragment.appendChild(dot);
   }
+
+  return fragment;
 }
 
 function setupCarouselButtons(container: HTMLDivElement, carouselId: string) {
@@ -228,7 +233,7 @@ function createCarouselSection(title: string, carouselContainerHtml: string) {
 }
 
 function createCarouselContainer(
-  carouselId: number,
+  carouselId: string,
   itemsPerView: number,
   stepSize: number,
   carouselItemsHTML: string,
@@ -321,7 +326,7 @@ function moveCarousel(carouselId: string, direction: number) {
 
   carousel.isTransitioning = true;
 
-  const totalItems = carousel.totalOriginalItems;
+  const totalItems = carousel.originalItemsCount;
   const maxIndex = Math.max(0, totalItems - carousel.itemsPerView);
 
   // 무한 루프 체크: 경계에 도달했는데 더 이동하려고 하는 경우
@@ -468,7 +473,7 @@ function updateIndicator(carousel: Carousel) {
   if (!indicator) return;
 
   const dots = indicator.querySelectorAll(".dot");
-  const totalItems = carousel.totalOriginalItems;
+  const totalItems = carousel.originalItemsCount;
   const maxIndex = Math.max(0, totalItems - carousel.itemsPerView);
 
   let possiblePositions = [];
