@@ -1,4 +1,5 @@
 export interface CarouselData {
+  id: number;
   title: string;
   itemsPerView: number;
   stepSize: number;
@@ -15,3 +16,5 @@ export interface Carousel {
   isTransitioning: boolean;
   willSnapToOriginal?: boolean;
 }
+
+// TODO: Movie 타입 정의

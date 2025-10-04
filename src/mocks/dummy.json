@@ -1,5 +1,6 @@
-{
-  "content1": {
+[
+  {
+    "id": 1,
     "title": "꼭 챙겨보세요! 회원님을 위한 콘텐츠",
     "itemsPerView": 6,
     "stepSize": 3,
@@ -16,7 +17,8 @@
       "/images/movie_thumbnail10.webp"
     ]
   },
-  "content2": {
+  {
+    "id": 2,
     "title": "상상의 나래를 펼친 영화",
     "itemsPerView": 6,
     "stepSize": 6,
@@ -30,7 +32,8 @@
       "/images/movie_thumbnail10.webp"
     ]
   },
-  "content3": {
+  {
+    "id": 3,
     "title": "어워드 수상 영화",
     "itemsPerView": 6,
     "stepSize": 5,
@@ -47,4 +50,4 @@
       "/images/movie_thumbnail5.webp"
     ]
   }
-}
+]

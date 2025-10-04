@@ -24,35 +24,34 @@ export async function initCarousel() {
 // ===== Initialization =====
 
 // 모든 캐러셀 렌더링
-async function renderCarousels(containerId = "catalog") {
-  const container = document.querySelector(`.${containerId}`);
-  if (!container) {
-    console.error(`Container with class '${containerId}' not found`);
+async function renderCarousels() {
+  const catalog = document.querySelector(`.catalog`);
+  if (!catalog) {
+    console.error(`Container with class 'catalog' not found`);
     return;
   }
 
-  container.innerHTML = '<div class="loading">데이터를 불러오는 중...</div>';
+  catalog.innerHTML = '<div class="loading">데이터를 불러오는 중...</div>';
 
   try {
     const carouselsData = await fetchCarouselsData();
 
     // 데이터가 비어있는지 확인
-    if (Object.keys(carouselsData).length === 0) {
-      container.innerHTML =
+    if (carouselsData.length === 0) {
+      catalog.innerHTML =
         '<div class="error">데이터를 불러올 수 없습니다.</div>';
       return;
     }
 
     // 캐러셀 HTML 생성
-    const carouselsHTML = Object.entries(carouselsData)
-      .map(([carouselId, data]) => createCarouselHTML(carouselId, data))
+    const carouselsHTML = carouselsData
+      .map((data) => createCarouselHTML(data))
       .join("");
 
-    container.innerHTML = carouselsHTML;
+    catalog.innerHTML = carouselsHTML;
   } catch (error) {
     console.error("캐러셀 렌더링 실패:", error);
-    container.innerHTML =
-      '<div class="error">캐러셀을 표시할 수 없습니다.</div>';
+    catalog.innerHTML = '<div class="error">캐러셀을 표시할 수 없습니다.</div>';
   }
 }
 
@@ -164,15 +163,15 @@ function setupCarouselButtons(container: HTMLDivElement, carouselId: string) {
 // ===== HTML Builders =====
 
 // 캐러셀 HTML 생성
-function createCarouselHTML(carouselId: string, data: CarouselData) {
-  const { title, itemsPerView, stepSize, items } = data;
+function createCarouselHTML(carouselData: CarouselData) {
+  const { id, title, itemsPerView, stepSize, items } = carouselData;
 
   const carouselItemsHTML = items
     .map((imageUrl, index) => createCarouselItem(imageUrl, index))
     .join("");
 
   const carouselContainerHTML = createCarouselContainer(
-    carouselId,
+    id,
     itemsPerView,
     stepSize,
     carouselItemsHTML
@@ -191,7 +190,7 @@ function createCarouselSection(title: string, carouselContainerHtml: string) {
 }
 
 function createCarouselContainer(
-  carouselId: string,
+  carouselId: number,
   itemsPerView: number,
   stepSize: number,
   carouselItemsHTML: string
@@ -467,7 +466,7 @@ function enableButton(button: HTMLButtonElement) {
 
 // ===== Data Fetching =====
 
-async function fetchCarouselsData(): Promise<Record<string, CarouselData>> {
+async function fetchCarouselsData(): Promise<CarouselData[]> {
   try {
     const response = await fetch("/api/carousels");
 
@@ -479,6 +478,6 @@ async function fetchCarouselsData(): Promise<Record<string, CarouselData>> {
     return data;
   } catch (error) {
     console.error("캐러셀 데이터 fetch 실패:", error);
-    return {};
+    return [];
   }
 }
