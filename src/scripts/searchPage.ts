@@ -59,6 +59,35 @@ function initSearchInput(query: string) {
 
   // X 버튼 표시
   searchClearButton.classList.add("visible");
+
+  // 검색 페이지에서 검색어 변경 시 URL 업데이트
+  let typingTimer: ReturnType<typeof setTimeout>;
+  const doneTypingInterval = 500; // 500ms 대기
+
+  searchInput.addEventListener("input", (e) => {
+    const target = e.target as HTMLInputElement;
+    const value = target.value;
+
+    clearTimeout(typingTimer);
+
+    if (value) {
+      searchClearButton.classList.add("visible");
+      // 타이핑이 멈추면 URL 업데이트
+      typingTimer = setTimeout(() => {
+        window.location.href = `/search?query=${encodeURIComponent(value)}`;
+      }, doneTypingInterval);
+    } else {
+      searchClearButton.classList.remove("visible");
+      window.location.href = "/";
+    }
+  });
+
+  // X 버튼 클릭
+  searchClearButton.addEventListener("click", () => {
+    searchInput.value = "";
+    searchClearButton.classList.remove("visible");
+    window.location.href = "/";
+  });
 }
 
 function renderSearchResults(movies: Movie[], container: HTMLDivElement) {

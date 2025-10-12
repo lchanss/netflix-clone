@@ -44,19 +44,26 @@ function initSearch() {
     searchInput.focus();
   });
 
-  // 검색어 입력 시
+  // 검색어 입력 시 (debounce 적용)
+  let typingTimer: ReturnType<typeof setTimeout>;
+  const doneTypingInterval = 500; // 500ms 대기
+
   searchInput.addEventListener("input", (e) => {
     const target = e.target as HTMLInputElement;
     const value = target.value;
 
+    clearTimeout(typingTimer);
+
     // X 버튼 표시/숨김
     if (value) {
       searchClearButton.classList.add("visible");
-      // URL 변경하여 검색 페이지로 이동
-      window.location.href = `/search?query=${encodeURIComponent(value)}`;
+      // 타이핑이 멈추면 URL 변경하여 검색 페이지로 이동
+      typingTimer = setTimeout(() => {
+        window.location.href = `/search?query=${encodeURIComponent(value)}`;
+      }, doneTypingInterval);
     } else {
       searchClearButton.classList.remove("visible");
-      // 검색어 없으면 홈으로
+      // 검색어 없으면 즉시 홈으로
       window.location.href = "/";
     }
   });
