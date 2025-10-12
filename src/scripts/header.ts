@@ -18,4 +18,56 @@ function initHeader() {
   }
 }
 
-export { initHeader };
+function initSearch() {
+  const searchToggleLabel = document.querySelector<HTMLLabelElement>(
+    ".search-toggle-label"
+  );
+  const searchInputWrapper = document.querySelector<HTMLDivElement>(
+    ".search-input-wrapper"
+  );
+  const searchInput = document.querySelector<HTMLInputElement>(".search-input");
+  const searchClearButton = document.querySelector<HTMLButtonElement>(
+    ".search-clear-button"
+  );
+
+  if (
+    !searchToggleLabel ||
+    !searchInputWrapper ||
+    !searchInput ||
+    !searchClearButton
+  ) {
+    return;
+  }
+
+  // label 클릭 시 input wrapper 활성화
+  searchToggleLabel.addEventListener("click", () => {
+    searchInputWrapper.classList.add("active");
+    searchInput.focus();
+  });
+
+  // 검색어 입력 시
+  searchInput.addEventListener("input", (e) => {
+    const target = e.target as HTMLInputElement;
+    const value = target.value;
+
+    // X 버튼 표시/숨김
+    if (value) {
+      searchClearButton.classList.add("visible");
+      // URL 변경하여 검색 페이지로 이동
+      window.location.href = `/search.html?query=${encodeURIComponent(value)}`;
+    } else {
+      searchClearButton.classList.remove("visible");
+      // 검색어 없으면 홈으로
+      window.location.href = "/";
+    }
+  });
+
+  // X 버튼 클릭 시
+  searchClearButton.addEventListener("click", () => {
+    searchInput.value = "";
+    searchClearButton.classList.remove("visible");
+    window.location.href = "/";
+  });
+}
+
+export { initHeader, initSearch };
