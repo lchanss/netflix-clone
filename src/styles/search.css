@@ -1,8 +1,17 @@
 /* 검색 영역 */
 .search-wrapper {
-  position: relative;
+  padding-left: 8px;
   display: flex;
   align-items: center;
+}
+
+.search-wrapper.active {
+  background-color: var(--black);
+  border: 1px solid var(--white);
+
+  .search-input-wrapper {
+    width: 300px;
+  }
 }
 
 .search-toggle-label {
@@ -14,19 +23,11 @@
 }
 
 .search-input-wrapper {
-  position: absolute;
-  right: 0;
   width: 0;
   overflow: hidden;
   transition: width 0.3s ease;
   display: flex;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-.search-input-wrapper.active {
-  width: 300px;
-  border: 1px solid var(--white);
 }
 
 .search-input {
@@ -57,7 +58,7 @@
 /* 검색 결과 페이지 */
 .search-page {
   min-height: 100vh;
-  padding: 100px 60px 60px;
+  padding: 40px 60px 20px;
 }
 
 .search-results-container {

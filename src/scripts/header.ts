@@ -25,6 +25,8 @@ function initSearch() {
   const searchInputWrapper = document.querySelector<HTMLDivElement>(
     ".search-input-wrapper"
   );
+  const searchWrapper =
+    document.querySelector<HTMLDivElement>(".search-wrapper");
   const searchInput = document.querySelector<HTMLInputElement>(".search-input");
   const searchClearButton = document.querySelector<HTMLButtonElement>(
     ".search-clear-button"
@@ -33,6 +35,7 @@ function initSearch() {
   if (
     !searchToggleLabel ||
     !searchInputWrapper ||
+    !searchWrapper ||
     !searchInput ||
     !searchClearButton
   ) {
@@ -41,7 +44,7 @@ function initSearch() {
 
   // label 클릭 시 input wrapper 활성화
   searchToggleLabel.addEventListener("click", () => {
-    searchInputWrapper.classList.add("active");
+    searchWrapper.classList.add("active");
     searchInput.focus();
   });
 
