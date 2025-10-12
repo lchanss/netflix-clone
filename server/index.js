@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { MOVIES } from "./data.js";
+import { CAROUSELS } from "./data.js";
 
 const app = express();
 const PORT = 3001;
@@ -29,6 +30,12 @@ app.get("/api/search", async (req, res) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   res.json({ movies: filteredMovies });
+});
+
+// GET /api/carousels
+app.get("/api/carousels", (req, res) => {
+  console.log("🎠 캐러셀 데이터 요청");
+  res.json(CAROUSELS);
 });
 
 app.listen(PORT, () => {

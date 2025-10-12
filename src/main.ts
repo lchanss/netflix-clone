@@ -10,12 +10,6 @@ import { initCarousel } from "./scripts/carousel.ts";
 import { initHeader, initSearch } from "./scripts/header.ts";
 
 async function initApp(): Promise<void> {
-  // 개발 환경에서만 MSW 시작
-  if (import.meta.env.DEV) {
-    const { worker } = await import("./mocks/browser");
-    await worker.start();
-  }
-
   initHeader();
   initSearch();
 

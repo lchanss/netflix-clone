@@ -514,7 +514,7 @@ function enableButton(button: HTMLButtonElement) {
 
 async function fetchCarouselsData(): Promise<CarouselData[]> {
   try {
-    const response = await fetch("/api/carousels");
+    const response = await fetch("http://localhost:3001/api/carousels");
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

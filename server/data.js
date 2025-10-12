@@ -170,3 +170,57 @@ export const MOVIES = [
     imageUrl: "/images/movie_thumbnail10.webp",
   },
 ];
+
+export const CAROUSELS = [
+  {
+    id: 1,
+    title: "꼭 챙겨보세요! 회원님을 위한 콘텐츠",
+    itemsPerView: 6,
+    stepSize: 3,
+    items: [
+      { id: 1, imageUrl: "/images/movie_thumbnail1.webp" },
+      { id: 2, imageUrl: "/images/movie_thumbnail2.webp" },
+      { id: 3, imageUrl: "/images/movie_thumbnail3.webp" },
+      { id: 4, imageUrl: "/images/movie_thumbnail4.webp" },
+      { id: 5, imageUrl: "/images/movie_thumbnail5.webp" },
+      { id: 6, imageUrl: "/images/movie_thumbnail6.webp" },
+      { id: 7, imageUrl: "/images/movie_thumbnail7.webp" },
+      { id: 8, imageUrl: "/images/movie_thumbnail8.webp" },
+      { id: 9, imageUrl: "/images/movie_thumbnail9.webp" },
+      { id: 10, imageUrl: "/images/movie_thumbnail10.webp" },
+    ],
+  },
+  {
+    id: 2,
+    title: "상상의 나래를 펼친 영화",
+    itemsPerView: 6,
+    stepSize: 6,
+    items: [
+      { id: 4, imageUrl: "/images/movie_thumbnail4.webp" },
+      { id: 5, imageUrl: "/images/movie_thumbnail5.webp" },
+      { id: 6, imageUrl: "/images/movie_thumbnail6.webp" },
+      { id: 7, imageUrl: "/images/movie_thumbnail7.webp" },
+      { id: 8, imageUrl: "/images/movie_thumbnail8.webp" },
+      { id: 9, imageUrl: "/images/movie_thumbnail9.webp" },
+      { id: 10, imageUrl: "/images/movie_thumbnail10.webp" },
+    ],
+  },
+  {
+    id: 3,
+    title: "어워드 수상 영화",
+    itemsPerView: 6,
+    stepSize: 5,
+    items: [
+      { id: 6, imageUrl: "/images/movie_thumbnail6.webp" },
+      { id: 7, imageUrl: "/images/movie_thumbnail7.webp" },
+      { id: 8, imageUrl: "/images/movie_thumbnail8.webp" },
+      { id: 9, imageUrl: "/images/movie_thumbnail9.webp" },
+      { id: 10, imageUrl: "/images/movie_thumbnail10.webp" },
+      { id: 1, imageUrl: "/images/movie_thumbnail1.webp" },
+      { id: 2, imageUrl: "/images/movie_thumbnail2.webp" },
+      { id: 3, imageUrl: "/images/movie_thumbnail3.webp" },
+      { id: 4, imageUrl: "/images/movie_thumbnail4.webp" },
+      { id: 5, imageUrl: "/images/movie_thumbnail5.webp" },
+    ],
+  },
+];
