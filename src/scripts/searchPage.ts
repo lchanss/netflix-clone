@@ -12,6 +12,9 @@ async function initSearchPage() {
     return;
   }
 
+  // 검색창 초기화
+  initSearchInput(query);
+
   const resultsTitle = document.querySelector<HTMLHeadingElement>(
     ".search-results-title"
   );
@@ -36,11 +39,31 @@ async function initSearchPage() {
   renderSearchResults(movies, resultsGrid);
 }
 
+function initSearchInput(query: string) {
+  const searchWrapper =
+    document.querySelector<HTMLDivElement>(".search-wrapper");
+  const searchInput = document.querySelector<HTMLInputElement>(".search-input");
+  const searchClearButton = document.querySelector<HTMLButtonElement>(
+    ".search-clear-button"
+  );
+
+  if (!searchWrapper || !searchInput || !searchClearButton) {
+    return;
+  }
+
+  // 검색창 활성화
+  searchWrapper.classList.add("active");
+
+  // 검색어 입력
+  searchInput.value = query;
+
+  // X 버튼 표시
+  searchClearButton.classList.add("visible");
+}
+
 function renderSearchResults(movies: Movie[], container: HTMLDivElement) {
-  // 컨테이너 초기화
   container.innerHTML = "";
 
-  // 각 영화를 DOM에 추가
   movies.forEach((movie) => {
     const item = document.createElement("div");
     item.className = "search-result-item";

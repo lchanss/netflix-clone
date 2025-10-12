@@ -22,9 +22,6 @@ function initSearch() {
   const searchToggleLabel = document.querySelector<HTMLLabelElement>(
     ".search-toggle-label"
   );
-  const searchInputWrapper = document.querySelector<HTMLDivElement>(
-    ".search-input-wrapper"
-  );
   const searchWrapper =
     document.querySelector<HTMLDivElement>(".search-wrapper");
   const searchInput = document.querySelector<HTMLInputElement>(".search-input");
@@ -34,7 +31,6 @@ function initSearch() {
 
   if (
     !searchToggleLabel ||
-    !searchInputWrapper ||
     !searchWrapper ||
     !searchInput ||
     !searchClearButton
@@ -57,7 +53,7 @@ function initSearch() {
     if (value) {
       searchClearButton.classList.add("visible");
       // URL 변경하여 검색 페이지로 이동
-      window.location.href = `/search.html?query=${encodeURIComponent(value)}`;
+      window.location.href = `/search?query=${encodeURIComponent(value)}`;
     } else {
       searchClearButton.classList.remove("visible");
       // 검색어 없으면 홈으로

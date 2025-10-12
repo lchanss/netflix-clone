@@ -20,7 +20,7 @@ async function initApp(): Promise<void> {
   initSearch();
 
   // 검색 페이지인 경우
-  if (window.location.pathname === "/search.html") {
+  if (window.location.pathname === "/search") {
     const { initSearchPage } = await import("./scripts/searchPage.ts");
     await initSearchPage();
   } else {
