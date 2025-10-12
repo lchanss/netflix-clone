@@ -7,7 +7,7 @@ import "./styles/footer.css";
 import "./styles/search.css";
 
 import { initCarousel } from "./scripts/carousel.ts";
-import { initHeader } from "./scripts/header.ts";
+import { initHeader, initSearch } from "./scripts/header.ts";
 
 async function initApp(): Promise<void> {
   // 개발 환경에서만 MSW 시작
@@ -17,7 +17,16 @@ async function initApp(): Promise<void> {
   }
 
   initHeader();
-  await initCarousel(); // MSW가 시작된 후 캐러셀 초기화
+  initSearch();
+
+  // 검색 페이지인 경우
+  if (window.location.pathname === "/search.html") {
+    const { initSearchPage } = await import("./scripts/searchPage.ts");
+    await initSearchPage();
+  } else {
+    // 홈 페이지인 경우
+    await initCarousel();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", initApp);
