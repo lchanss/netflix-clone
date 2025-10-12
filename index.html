@@ -28,14 +28,33 @@
             </ul>
           </nav>
           <div class="util">
-            <button class="search-button">
-              <img
-                src="/icons/search_icon.svg"
-                alt="검색"
-                width="24px"
-                height="24px"
-              />
-            </button>
+            <div class="search-wrapper">
+              <label for="search-input" class="search-toggle-label">
+                <img
+                  src="/icons/search_icon.svg"
+                  alt="검색"
+                  width="24px"
+                  height="24px"
+                />
+              </label>
+              <div class="search-input-wrapper">
+                <input
+                  type="text"
+                  id="search-input"
+                  class="search-input"
+                  placeholder="제목, 사람, 장르"
+                  aria-label="검색"
+                />
+                <button class="search-clear-button" aria-label="검색어 지우기">
+                  <img
+                    src="/icons/close_icon.svg"
+                    alt="닫기"
+                    width="20px"
+                    height="20px"
+                  />
+                </button>
+              </div>
+            </div>
             <button class="kids-button">키즈</button>
             <div class="notification-button-wrapper modal-wrapper">
               <button class="notification-button">
