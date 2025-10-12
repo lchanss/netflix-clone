@@ -4,6 +4,7 @@ import "./styles/header.css";
 import "./styles/hero.css";
 import "./styles/carousel.css";
 import "./styles/footer.css";
+import "./styles/search.css";
 
 import { initCarousel } from "./scripts/carousel.ts";
 import { initHeader } from "./scripts/header.ts";
