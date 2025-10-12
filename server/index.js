@@ -10,7 +10,7 @@ app.use(cors()); // CORS 허용
 app.use(express.json());
 
 // GET /api/search?query=검색어
-app.get("/api/search", (req, res) => {
+app.get("/api/search", async (req, res) => {
   const query = req.query.query;
 
   // query 파라미터가 없으면 빈 배열 반환
@@ -24,6 +24,9 @@ app.get("/api/search", (req, res) => {
   );
 
   console.log(`🔍 검색어: "${query}" → ${filteredMovies.length}개 결과`);
+
+  // 1초 지연
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   res.json({ movies: filteredMovies });
 });
