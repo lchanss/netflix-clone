@@ -38,6 +38,15 @@ function initSearch() {
     return;
   }
 
+  // 검색 페이지인 경우 URL에서 검색어 읽어서 초기화
+  const urlParams = new URLSearchParams(window.location.search);
+  const query = urlParams.get("query");
+  if (query) {
+    searchWrapper.classList.add("active");
+    searchInput.value = query;
+    searchClearButton.classList.add("visible");
+  }
+
   // label 클릭 시 input wrapper 활성화
   searchToggleLabel.addEventListener("click", () => {
     searchWrapper.classList.add("active");
@@ -63,8 +72,10 @@ function initSearch() {
       }, doneTypingInterval);
     } else {
       searchClearButton.classList.remove("visible");
-      // 검색어 없으면 즉시 홈으로
-      window.location.href = "/";
+      // 검색어 없으면 0.5초 후 홈으로
+      typingTimer = setTimeout(() => {
+        window.location.href = "/";
+      }, doneTypingInterval);
     }
   });
 

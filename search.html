@@ -30,17 +30,18 @@
           <div class="util">
             <!-- 검색 영역 -->
             <div class="search-wrapper active">
-              <button class="search-toggle-button" aria-label="검색">
+              <label for="search-input" class="search-toggle-label">
                 <img
                   src="/icons/search_icon.svg"
                   alt="검색"
                   width="24px"
                   height="24px"
                 />
-              </button>
-              <div class="search-input-wrapper active">
+              </label>
+              <div class="search-input-wrapper">
                 <input
                   type="text"
+                  id="search-input"
                   class="search-input"
                   placeholder="제목, 사람, 장르"
                   aria-label="검색"
