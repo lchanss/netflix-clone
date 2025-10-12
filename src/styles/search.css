@@ -84,10 +84,6 @@
   transition: transform 0.2s ease;
 }
 
-.search-result-item:hover {
-  transform: scale(1.05);
-}
-
 .search-result-item img {
   width: 100%;
   height: auto;
@@ -100,10 +96,18 @@
   margin-top: 8px;
 }
 
+/* 로딩 메시지 */
+.search-loading {
+  color: var(--neutral-400);
+  font-size: 18px;
+  text-align: center;
+  padding-top: 60px;
+}
+
 /* 검색 결과 없음 메시지 */
 .search-no-results {
   color: var(--neutral-400);
   font-size: 18px;
   text-align: center;
-  padding: 60px 20px;
+  padding-top: 60px;
 }

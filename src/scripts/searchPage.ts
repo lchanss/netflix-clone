@@ -25,6 +25,8 @@ async function initSearchPage() {
 
   resultsTitle.textContent = `"${query}" 검색 결과`;
 
+  resultsGrid.innerHTML = '<p class="search-loading">검색 중...</p>';
+
   const { movies } = await searchMovies(query);
 
   if (movies.length === 0) {
