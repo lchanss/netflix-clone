@@ -21,3 +21,11 @@ export type CarouselItem = {
   id: number;
   imageUrl: string;
 };
+
+export type Movie = {
+  id: number;
+  title: string;
+  imageUrl: string;
+};
+
+export type GetSearchMoviesResponse = { movies: Movie[] };
