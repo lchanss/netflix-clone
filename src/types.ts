@@ -1,17 +1,31 @@
-export interface CarouselData {
+export type CarouselData = {
+  id: string;
   title: string;
   itemsPerView: number;
   stepSize: number;
-  items: string[];
-}
+  items: CarouselItem[];
+};
 
-export interface Carousel {
+export type Carousel = {
   currentIndex: number;
   realCurrentIndex: number;
   itemsPerView: number;
   stepSize: number;
   container: HTMLElement;
-  totalOriginalItems: number;
+  originalItemsCount: number;
   isTransitioning: boolean;
   willSnapToOriginal?: boolean;
-}
+};
+
+export type CarouselItem = {
+  id: number;
+  imageUrl: string;
+};
+
+export type Movie = {
+  id: number;
+  title: string;
+  imageUrl: string;
+};
+
+export type GetSearchMoviesResponse = { movies: Movie[] };
